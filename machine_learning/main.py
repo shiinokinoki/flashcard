@@ -9,4 +9,4 @@ if path_tesseract not in os.environ["PATH"].split(os.pathsep):
     os.environ["PATH"] += path_tesseract
 
 
-# print(OCR('machine_learning\img_folda\yousyo1.jpg'))
+print(OCR('machine_learning\img_folda\yousyo1.jpg'))
