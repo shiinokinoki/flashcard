@@ -38,19 +38,25 @@
         <header class="masthead">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
-                    <h1 class="mx-auto my-0 text-uppercase">TANGO APP</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Meccha sugoi kinou wo sonaeta tango cho.</h2>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Stay calm and take a picture.</h2>
+                    
+                    <!-- take a picture -->
+                    
+                    <video id="camera" width="300" height="200"></video>
+                    <canvas id="picture" width="300" height="200"></canvas>
+                    <form>
+                    <button class="btn btn-success" type="button" id="shutter">take a picture</button>
+                    </form>
+
+                    <audio id="se" preload="auto">
+                    <source src="camera-shutter1.mp3" type="audio/mp3">
+                    </audio>
                     
                         <div class="container">
+                            <hr class="my-4" />
                             <div class="row">
-                                <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger">Edit</a>
-                                </div>
-                                <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="takepic.html">Take a Picture</a>
-                                </div>
-                                <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger">Others</a>
+                                <div class="col-md-12 mb-3 mb-md-0">
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="page.html">Go back home</a>
                                 </div>
                             </div>
                         </div>
@@ -61,47 +67,6 @@
             </div>
         </header>
 
-
-        <!-- Main body -->
-        <section class="contact-section bg-black">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-1 h-100">
-                            <div class="card-body text-center" id=one>
-                                <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">tango cho 1</h4>
-                                <hr class="my-4" />
-                                <div class="small text-black-50">kihon mondai</div>
-                                <a class="btn btn-primary js-scroll-trigger">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-1 h-100">
-                            <div class="card-body text-center" id=two>
-                                <i class="fas fa-envelope text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">tango cho 2</h4>
-                                <hr class="my-4" />
-                                <div class="small text-black-50">michakusyu mondai</a></div>
-                                <a class="btn btn-primary js-scroll-trigger">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-1 h-100">
-                            <div class="card-body text-center" id=three>
-                                <i class="fas fa-mobile-alt text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">tango cho 3</h4>
-                                <hr class="my-4" />
-                                <div class="small text-black-50">matigaeta monndai</div>
-                                <a class="btn btn-primary js-scroll-trigger">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <!-- Footer-->
         <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright © Hait Lab B team 2020</div></footer>
         <!-- Bootstrap core JS-->
@@ -110,6 +75,6 @@
         <!-- Third party plugin JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="js/scripts_takepic.js"></script>
     </body>
 </html>
