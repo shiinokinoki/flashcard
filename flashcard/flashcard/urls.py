@@ -18,12 +18,13 @@ from django.urls import path,include
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from wordbook.views import Top
 
 urlpatterns = [
+    path('', Top.as_view(), name='top'),
     path('admin/', admin.site.urls),
     path('wordbook/',include('wordbook.urls')),
     path('wordbook/', include('django.contrib.auth.urls')),
-    path('', RedirectView.as_view(url='wordbook/', permanent=True)),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
