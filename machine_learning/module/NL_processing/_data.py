@@ -1,18 +1,75 @@
+import json
+import sqlite3
+from googletrans import Translator
+import nltk
+from nltk.corpus import stopwords
+
 class after_ocr():
     def __init__(self):
-        pass
+        nltk.download('averaged_perceptron_tagger')
+        nltk.download('stopwords')
 
-    def fit(self):
-        pass
+        self._file_name = "test.json" # 保存ファイル名
+        self.__using_type = ['JJ','JJR','JJS','NN','NNS','NNP','NNPS',
+                         'RB','RBR','RBS','VB','VBD','VBG','VBN','VBP',
+                            'VBZ']
+        symbol = {"'", '"', ':', ';', '.', ',', '-', '!', '?', "'s"}
+        self.__stopset = set(stopwords.words('english')) | symbol
 
-    def _Morpheme_decomposition(self):
-        pass
-
-    def _select_type(self):
-        pass
-
-    def hogehoge(self):
-        pass
-
-
+    def run(self, words:list):
+        '''
+        ocrによって吐き出された単語に対して実行する
+        '''
+        words = self._remove_stopwords(words)
+        self._selected = []
+        for word, part_of_speech in nltk.pos_tag(words):
+            if part_of_speech in self.__using_type:
+                self._selected.append(word)
+        self._words_to_json()
     
+    def _remove_stopwords(self, words:list)->list:
+        '''
+        stopsetに入っているものを除外する
+        '''
+        return [s for s in words if s not in self.__stopset]
+
+    def _words_to_json(self):
+        '''
+        文字を翻訳しjson形式で保存する
+        '''
+        
+        meaning_dict_list = []
+
+        for word in self._selected:
+            meaning_dict_list.append(self._translate(word))
+
+        with open(self._file_name, mode="w",encoding='utf-8') as f:
+            d = json.dumps(meaning_dict_list,indent=2, ensure_ascii=False)
+            f.write(d)
+
+    def _translate(self, word: str) -> dict:
+        '''
+        wordを翻訳する．基本的には辞書を使って行うが，辞書になかった場合はgoogleの翻訳に頼る．
+        '''
+        word_to_meaning = {}
+        word = '"'+word+'"'
+        conn = sqlite3.connect("ejdict.sqlite3")
+        raw_meanings = list(conn.execute('select mean from items where word='+word))
+        ans_meanings = []
+        word = word.replace('"', '')
+        
+        if len(raw_meanings) != 0:
+            #辞書が使える時
+            for x in raw_meanings:
+                ans_meanings.extend((x[0].split('/')))
+        else:
+            #辞書が使えないのでgoogletransを使う．
+            translator = Translator()
+            ans_meanings.append(translator.translate(word).text) 
+        ans_dict = {'name':word,'meaning':ans_meanings}
+        conn.close()
+        return ans_dict
+    
+    @property
+    def select_words(self):
+        return self._selected
