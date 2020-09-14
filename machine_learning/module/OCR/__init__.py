@@ -1,3 +1,3 @@
-from _data import ocr
+from ._data import OCR
 
-__all__ = ['ocr']
+__all__ = ['OCR']

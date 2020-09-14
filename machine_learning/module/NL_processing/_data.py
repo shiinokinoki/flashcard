@@ -4,22 +4,24 @@ from googletrans import Translator
 import nltk
 from nltk.corpus import stopwords
 
-class after_ocr():
-    def __init__(self):
+class After_ocr():
+    def __init__(self,json_name):
         nltk.download('averaged_perceptron_tagger')
         nltk.download('stopwords')
+        nltk.download('punkt')
 
-        self._file_name = "test.json" # 保存ファイル名
+        self._file_name = json_name # 保存ファイル名
         self.__using_type = ['JJ','JJR','JJS','NN','NNS','NNP','NNPS',
                          'RB','RBR','RBS','VB','VBD','VBG','VBN','VBP',
                             'VBZ']
         symbol = {"'", '"', ':', ';', '.', ',', '-', '!', '?', "'s"}
         self.__stopset = set(stopwords.words('english')) | symbol
 
-    def run(self, words:list):
+    def run(self, text:str):
         '''
         ocrによって吐き出された単語に対して実行する
         '''
+        words = nltk.word_tokenize(text)
         words = self._remove_stopwords(words)
         self._selected = []
         for word, part_of_speech in nltk.pos_tag(words):
@@ -51,9 +53,8 @@ class after_ocr():
         '''
         wordを翻訳する．基本的には辞書を使って行うが，辞書になかった場合はgoogleの翻訳に頼る．
         '''
-        word_to_meaning = {}
         word = '"'+word+'"'
-        conn = sqlite3.connect("ejdict.sqlite3")
+        conn = sqlite3.connect("./module/NL_processing/ejdict.sqlite3")
         raw_meanings = list(conn.execute('select mean from items where word='+word))
         ans_meanings = []
         word = word.replace('"', '')

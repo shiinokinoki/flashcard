@@ -1,3 +1,3 @@
-from _data import after_ocr
+from ._data import After_ocr
 
-__all__ = ['after_ocr']
+__all__ = ['After_ocr']
