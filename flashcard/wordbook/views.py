@@ -7,14 +7,26 @@ from django.contrib.auth import (
      get_user_model, logout as auth_logout,
 )
 from .forms import UserCreateForm
+from wordbook.models import User, NoteBook, Post
 
 User = get_user_model()
 
 class Top(generic.TemplateView):
     template_name = 'top.html'
 
-class Page(generic.TemplateView):
+class MyPage(generic.TemplateView):
     template_name = 'page.html'
+
+class MyNotebookListView(generic.ListView):
+    model = NoteBook
+    def get_queryset(self):
+        user = self.request.user
+        return NoteBook.objects.filter(create_user=user)
+
+class TakePicture(generic.TemplateView):
+    template_name = 'takepic.html'
+
+#Auth 関連
 
 class SignUpView(generic.CreateView):
     form_class = UserCreateForm

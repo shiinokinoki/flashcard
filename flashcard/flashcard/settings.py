@@ -123,5 +123,6 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'wordbook.User'
 
+LOGIN_URL = '/wordbook/login/'
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

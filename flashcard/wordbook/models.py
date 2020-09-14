@@ -72,11 +72,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class NoteBook(models.Model):
     '''単語帳のモデル'''
-    name = models.CharField(max_length=100)
+    title  = models.CharField(max_length=100)
     create_user = models.ForeignKey(get_user_model(),null=True,on_delete=models.CASCADE)
     context = models.TextField()
-    
-    
+    def __str__(self):
+        return self.title
+
     
 class Post(models.Model):
     '''
@@ -95,4 +96,7 @@ class Post(models.Model):
     accuracy = models.FloatField(default=1)
     quo_res = models.IntegerField(default=5)
     
-    notebook = models.ManyToManyField('NoteBook',null=True)
+    notebook = models.ManyToManyField('NoteBook',blank=True)
+    
+    def __str__(self):
+        return self.word
