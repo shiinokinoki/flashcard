@@ -89,12 +89,13 @@ class Post(models.Model):
     '''
     Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
-    word = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
-    trans = models.CharField(verbose_name='和訳',max_length=100)
+    name = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
+    meaning = models.CharField(verbose_name='和訳',max_length=100)
     interval = models.FloatField(default=1)
     e_factor = models.FloatField(default=2.5)
     accuracy = models.FloatField(default=1)
     quo_res = models.IntegerField(default=5)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     
     notebook = models.ManyToManyField('NoteBook',blank=True)
     
