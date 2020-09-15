@@ -12,4 +12,6 @@ urlpatterns = [
     path('delete_complete', views.DeleteView.as_view(), name='delete-complete'),
     path('takepic/',views.TakePicture.as_view(),name='takepic'),#HTMLをそのまま見る
     path('registerlist/',views.MakeRegisterListView.as_view(),name='registerlist'),
+    path('registerlist/registered/',views.GetChecklist.as_view(),name='registered'),
+    # path('learning/',views.GetAnswers.as_view(),name=''),
 ]

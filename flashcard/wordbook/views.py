@@ -11,7 +11,6 @@ from wordbook.models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 
 
-
 User = get_user_model()
 
 class Top(generic.TemplateView):
@@ -36,12 +35,30 @@ class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
         user = self.request.user
         for word in scanned_dic:
             for meaning in word['meaning']:
-                count +=1
-                Post.objects.create(name = word['name'],meaning=meaning,create_user=user)
+                result, created = Post.objects.get_or_create(name = word['name'],meaning=meaning,create_user=user)
+                if created:
+                    count +=1
         return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
 
+class GetChecklist(generic.ListView):
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        checks_value = request.POST.getlist('checks[]')
+        checks_num = [int(n) for n in checks_value]
+        posts = Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+        for i,obj in enumerate(posts):
+            if i in checks_num:
+                continue
+            else:
+                obj.delete()
 
-    
+
+class GetAnswers(generic.ListView):
+    def post(self, request, *args, **kwargs):
+        
+        checks_value = request.POST.getlist('checks[]')
+        
+        
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
 
