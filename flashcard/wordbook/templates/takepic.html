@@ -1,5 +1,6 @@
+<!-- こっちが読み込まれてる -->
 <!DOCTYPE html>
-{% load static %} 
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -27,7 +28,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="page.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'wordbook:home'%}">Home</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#one">About</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#two">Projects</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#three">Contact</a></li>
@@ -57,10 +58,12 @@
                             <hr class="my-4" />
                             <div class="row">
                                 <div class="col-md-12 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="page.html">Go back home</a>
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:home'%}">Go back home</a>
                                 </div>
                             </div>
                         </div>
+                                
+                    
                     </section>
                 </div>
             </div>
@@ -74,6 +77,6 @@
         <!-- Third party plugin JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
-        <script src="{% static 'wordbook/js/scripts_takepic.js'%}"></script>
+        <script src="{% static 'wordbook/js/scripts_takepic.js' %}"></script>
     </body>
 </html>
