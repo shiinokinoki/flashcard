@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <meta charset="utf-8" />
+    <title>単語登録画面</title>
+</head>
+ 
+<body>
+    <h1>トップ画面</h1>
+
+    {% if object_list %}
+    {% for item in object_list %}
+    <form id="chk" method="post" name="chk" >
+        {% csrf_token %}
+        {% for item in object_list %}
+        <input type="checkbox" name="checks[]" value="{{ forloop.counter }}" /><a>{{ item.name }}</a>
+        {% endfor %}
+        <input type="submit" id="button" name="button" value="送信">
+    </form>
+    {% else %}
+    <p>There are no books in the library.</p>
+    {% endif %}
+
+</body>
+
+</html>
