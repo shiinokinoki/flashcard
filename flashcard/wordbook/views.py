@@ -26,19 +26,22 @@ class MyNotebookListView(generic.ListView):
         user = self.request.user
         return NoteBook.objects.filter(create_user=user)
 
-class MakeRegisterListView(LoginRequiredMixin, generic.View):
+class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
+    template_name = 'wordbook/register_list.html'
     model = Post
     def get_queryset(self):
         count =0
-        scanned_dic = readjson()
-        for word,meanings in scanned_dic.items():
-            for meaning in meanings:
-                count +=1
-                post = Post(name = word,meaning=meaning)
-                post.save()
+        path = './wordbook/data/json/dict_sample.json'
+        scanned_dic = readjson(path=path)
         user = self.request.user
+        for word in scanned_dic:
+            for meaning in word['meaning']:
+                count +=1
+                Post.objects.create(name = word['name'],meaning=meaning,create_user=user)
         return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
 
+
+    
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
 

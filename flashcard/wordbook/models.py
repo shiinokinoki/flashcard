@@ -103,4 +103,6 @@ class Post(models.Model):
     notebook = models.ManyToManyField('NoteBook',blank=True)
     
     def __str__(self):
-        return self.word
+        return self.name
+    
+    

@@ -1,6 +1,6 @@
 import json
 
-def ReadJson():
-    json_open = open('../data/json/dict_sample.json', 'r')
+def ReadJson(path):
+    json_open = open(path, 'r')
     json_load = json.load(json_open)
     return(json_load)
