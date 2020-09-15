@@ -11,6 +11,7 @@ urlpatterns = [
     path('delete_confirm', TemplateView.as_view(template_name='registration/delete_confirm.html'), name='delete-confirmation'),
     path('delete_complete', views.DeleteView.as_view(), name='delete-complete'),
     path('takepic/',views.TakePicture.as_view(),name='takepic'),#HTMLをそのまま見る
+    path('takepic/detimg/',views.GetImage(),name='detimg'),
     path('registerlist/',views.MakeRegisterListView.as_view(),name='registerlist'),
     path('registerlist/registered/',views.GetChecklist.as_view(),name='registered'),
     # path('learning/',views.GetAnswers.as_view(),name=''),

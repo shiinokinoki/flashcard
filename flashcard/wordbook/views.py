@@ -1,7 +1,7 @@
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import generic
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import (
     get_user_model, logout as auth_logout,
@@ -9,7 +9,7 @@ from django.contrib.auth import (
 from .forms import UserCreateForm
 from wordbook.models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
-
+import cv2
 
 User = get_user_model()
 
@@ -51,6 +51,14 @@ class GetChecklist(generic.ListView):
                 continue
             else:
                 obj.delete()
+
+def GetImage(request):
+    if request.method == 'POST':
+        posted_img = request.FILES['image']
+        cv2.imwrite('./wordbook/data/pict.jpg',posted_img)
+        return redirect('registerlist')
+
+
 
 
 class GetAnswers(generic.ListView):
