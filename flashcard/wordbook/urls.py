@@ -12,4 +12,5 @@ urlpatterns = [
     path('delete_complete', views.DeleteView.as_view(), name='delete-complete'),
     path('test/',views.MyNotebookListView.as_view(), name='test'),#DBが反映されているかチェックする
     path('takepic/',views.TakePicture.as_view(),name='takepic'),#HTMLをそのまま見る
+    path('registerlist/',views.MakeRegisterListView.as_view(),name='registerlist'),
 ]

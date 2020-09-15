@@ -81,14 +81,16 @@ class NoteBook(models.Model):
     
 class Post(models.Model):
     '''
-    word:英単語
-    trans:和訳
+    name:英単語
+    meaning:和訳
     interval:次の復習までの時間(日)
     e_factor:アイテムの簡単さ 1.3~2.5
     quo_res:アイテムへの回答の質　1~5
+    accuracy:正答率
+    date_joined:登録時間
     '''
     Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    
+
     name = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
     meaning = models.CharField(verbose_name='和訳',max_length=100)
     interval = models.FloatField(default=1)
@@ -96,7 +98,8 @@ class Post(models.Model):
     accuracy = models.FloatField(default=1)
     quo_res = models.IntegerField(default=5)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    
+
+    create_user = models.ForeignKey(get_user_model(),null=True,on_delete=models.CASCADE)
     notebook = models.ManyToManyField('NoteBook',blank=True)
     
     def __str__(self):
