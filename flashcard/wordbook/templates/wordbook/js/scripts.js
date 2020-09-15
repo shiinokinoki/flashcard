@@ -34,12 +34,26 @@
     $(".js-scroll-trigger").click(function () {
         $(".navbar-collapse").collapse("hide");
     });
-
+    
+    
     // Activate scrollspy to add active class to navbar items on scroll
+    //スクロールスパイはメニュー(ナビゲーションバー、またはリストグループ)に応じて本文をスクロールします。
+    //また、本文のスクロールを監視し、スクロールに応じてメニューの該当アイテムをアクティブにします。
     $("body").scrollspy({
         target: "#mainNav",
         offset: 100,
     });
+
+    //解答をクリックすると正誤と答えが現れる
+    $(".sbm-ans").click(function ()  {
+        if ($(this).attr('id')==='correct'){
+            $('.correct-ans').show();
+        }
+        else{
+            $('.wrong-ans').show();
+        }
+    });
+
 
     // Collapse Navbar
     var navbarCollapse = function () {
