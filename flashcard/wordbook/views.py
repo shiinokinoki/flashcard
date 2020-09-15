@@ -39,15 +39,11 @@ class MakeRegisterListView(LoginRequiredMixin, generic.View):
         user = self.request.user
         return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
 
-
-        
-        
-        
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
 
 
-#Auth 関連
+#Auth認証 関連
 
 class SignUpView(generic.CreateView):
     form_class = UserCreateForm
