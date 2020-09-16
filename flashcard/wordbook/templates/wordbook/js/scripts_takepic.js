@@ -55,6 +55,10 @@
     $(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
 
+///////////////////
+//takepic用
+///////////////////
+
 window.onload = () => {
     const video  = document.querySelector("#camera");
     const canvas = document.querySelector("#picture");
@@ -88,17 +92,41 @@ window.onload = () => {
     /**
      * シャッターボタン
      */
-     document.querySelector("#shutter").addEventListener("click", () => {
-      const ctx = canvas.getContext("2d");
-  
-      // 演出的な目的で一度映像を止めてSEを再生する
-      video.pause();  // 映像を停止
-      se.play();      // シャッター音
-      setTimeout( () => {
-        video.play();    // 0.5秒後にカメラ再開
-      }, 500);
-  
-      // canvasに画像を貼り付ける
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    document.querySelector("#shutter").addEventListener("click", () => {
+    const ctx = canvas.getContext("2d");
+
+    // 演出的な目的で一度映像を止めてSEを再生する
+    video.pause();  // 映像を停止
+    se.play();      // シャッター音
+    setTimeout( () => {
+    video.play();    // 0.5秒後にカメラ再開
+    }, 500);
+
+    // canvasに画像を貼り付ける
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // canvas上の画像をbase64に変換.
+    var base64 = canvas.toDataURL('image/jpg');	
+
+    // base64変換したデータのプレフィクスを削除.
+    var picture = base64.replace(/^data:\w+\/\w+;base64,/, '');	
+    
+
+    //データの送信
+    function tenso(picture){
+        return $.ajax({
+            url: "http://127.0.0.1:8000/wordbook/htmls/local_editpic/",//phpファイルのURL
+            type: "post",
+            data: {"image":picture},
+            success: function(){	// 転送成功時.
+            console.log("success");	
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {	// 転送失敗時.
+                console.log("error");
+            }
+        })
+    }
+
+    tenso(picture);
     });
   };

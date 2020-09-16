@@ -14,6 +14,6 @@ urlpatterns = [
     # path('takepic/detimg/',views.getimage,name='detimg'),
     path('registerlist/',views.makeregisterlist,name='registerlist'),
     # path('registerlist/registered/',views.GetChecklist.as_view(),name='registered'),
-    path('/questions/<>/rundom/',views.GetAnswers.as_view(),name=''),
-    path('/questions/<>/mistake/',views.GetAnswers.as_view(),name=''),
+    # path('/questions/<>/rundom/',views.GetAnswers.as_view(),name=''),
+    # path('/questions/<>/mistake/',views.GetAnswers.as_view(),name=''),
 ]
