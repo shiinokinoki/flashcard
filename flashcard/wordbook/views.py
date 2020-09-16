@@ -50,41 +50,61 @@ class PostDeleteView(DeleteView):
     success_url = reverse_lazy('wordbook:post_list')
 
 
-class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
+
+# # class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
+#     template_name = 'wordbook/register_list.html'
+#     model = Post
+#     def get_queryset(self):
+#         count =0
+#         path = './wordbook/data/json/dict_sample.json'
+#         scanned_dic = readjson(path=path)
+#         user = self.request.user
+#         for word in scanned_dic:
+#             for meaning in word['meaning']:
+#                 result, created = Post.objects.get_or_create(name = word['name'],meaning=meaning,create_user=user)
+#                 if created:
+#                     count +=1
+#         return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+
+
+def makeregisterlist(request):
     template_name = 'wordbook/register_list.html'
     model = Post
-    def get_queryset(self):
-        count =0
-        path = './wordbook/data/json/dict_sample.json'
-        scanned_dic = readjson(path=path)
-        user = self.request.user
-        for word in scanned_dic:
-            for meaning in word['meaning']:
-                result, created = Post.objects.get_or_create(name = word['name'],meaning=meaning,create_user=user)
-                if created:
-                    count +=1
-        return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+    count =0
+    path = './wordbook/data/json/dict_sample.json'
+    scanned_dic = readjson(path=path)
+    word_list =[]
+    for word in scanned_dic:
+        word_list.append(word['name'])
+        
+    context = {
+        'word_list':word_list,
+    }
+    return render(request, 'wordbook/register_list.html', context=context)
+        
 
-class GetChecklist(generic.ListView):
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
-        checks_value = request.POST.getlist('checks[]')
-        checks_num = [int(n) for n in checks_value]
-        posts = Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
-        for i,obj in enumerate(posts):
-            if i in checks_num:
-                continue
-            else:
-                obj.delete()
+# class GetChecklist(generic.ListView):
+#     def post(self, request, *args, **kwargs):
+#         user = self.request.user
+#         checks_value = request.POST.getlist('checks[]')
+#         checks_num = [int(n) for n in checks_value]
+#         posts = Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+#         for i,obj in enumerate(posts):
+#             if i in checks_num:
+#                 continue
+#             else:
+#                 obj.delete()
 
-def GetImage(request):
+def getimage(request):
     if request.method == 'POST':
         posted_img = request.FILES['image']
         cv2.imwrite('./wordbook/data/pict.jpg',posted_img)
         return redirect('registerlist')
 
-
-
+def makequestions(request):
+    
+    
+    return render(request, 'wordbook/questions.html',context=context)
 
 class GetAnswers(generic.ListView):
     def post(self, request, *args, **kwargs):
@@ -111,7 +131,6 @@ class ProfileView(LoginRequiredMixin, generic.View):
 
 
 class DeleteView(LoginRequiredMixin, generic.View):
-
     def get(self, *args, **kwargs):
         user = User.objects.get(email=self.request.user.email)
         user.is_active = False
