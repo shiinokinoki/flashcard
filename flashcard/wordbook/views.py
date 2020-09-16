@@ -17,9 +17,6 @@ User = get_user_model()
 class Top(generic.TemplateView):
     template_name = 'top.html'
 
-class MyPage(generic.TemplateView):
-    template_name = 'page.html'
-
 class MyNotebookListView(generic.ListView):
     model = NoteBook
     def get_queryset(self):
@@ -112,9 +109,8 @@ class GetAnswers(generic.ListView):
         checks_value = request.POST.getlist('checks[]')
         
         
-def takepicture(generic.TemplateView):
+class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
-    
 
 
 #Auth認証 関連
@@ -138,4 +134,3 @@ class DeleteView(LoginRequiredMixin, generic.View):
         user.save()
         auth_logout(self.request)
         return render(self.request,'registration/delete_complete.html')
-
