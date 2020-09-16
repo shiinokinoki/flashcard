@@ -5,6 +5,10 @@
     */
     (function ($) {
     "use strict"; // Start of use strict
+    
+    ///////////////////
+    //全ページ対応
+    ///////////////////
 
     // Smooth scrolling using jQuery easing
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
@@ -43,6 +47,10 @@
         target:"#mainNav",
         offset: 100
     });
+    
+    ///////////////////
+    //question用
+    ///////////////////
 
     //解答をクリックすると正誤と答えが現れる
     $(".sbm-ans").click(function ()  {
@@ -53,6 +61,12 @@
             $('.wrong-ans').show();
         }
     });
+
+
+    ///////////////////
+    //takepic用
+    ///////////////////
+
 
 
     // Collapse Navbar
