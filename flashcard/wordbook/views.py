@@ -86,8 +86,9 @@ class GetAnswers(generic.ListView):
         checks_value = request.POST.getlist('checks[]')
         
         
-class TakePicture(generic.TemplateView):
+def takepicture(generic.TemplateView):
     template_name = 'takepic.html'
+    
 
 
 #Auth認証 関連
