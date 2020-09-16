@@ -10,7 +10,6 @@
     <h1>トップ画面</h1>
 
     {% if object_list %}
-    {% for item in object_list %}
     <form id="chk" method="post" name="chk" >
         {% csrf_token %}
         {% for item in object_list %}
