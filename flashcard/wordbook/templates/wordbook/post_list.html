@@ -1,0 +1,9 @@
+
+{% for post in object_list %}
+<p>
+    {{post.name}} {{post.meaning}} 
+    <a href="{% url 'wordbook:post_detail' post.pk %}">詳細</a>
+    <a href="{% url 'wordbook:post_update' post.pk %}">編集</a>
+    <a href="{% url 'wordbook:post_delete' post.pk %}">削除</a>
+</p>
+{% endfor %}
