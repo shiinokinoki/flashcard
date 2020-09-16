@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.urls import reverse
 
 class UserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -77,6 +78,9 @@ class NoteBook(models.Model):
     context = models.TextField()
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("wordbook:")
 
     
 class Post(models.Model):
