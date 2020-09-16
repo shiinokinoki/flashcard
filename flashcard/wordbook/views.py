@@ -1,13 +1,14 @@
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.edit import UpdateView, DeleteView
 from django.shortcuts import render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 from .forms import UserCreateForm
-from wordbook.models import User, NoteBook, Post
+from .models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 import cv2
 
@@ -24,6 +25,30 @@ class MyNotebookListView(generic.ListView):
     def get_queryset(self):
         user = self.request.user
         return NoteBook.objects.filter(create_user=user)
+
+
+class MyPostListView(generic.ListView):
+    model = Post
+    template_name = 'wordbook/post_list.html'
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(create_user=user)
+
+
+class PostDetailView(generic.DetailView):
+    model = Post
+    template_name = 'wordbook/post_detail.html'
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['name', 'meaning', 'notebook']
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy('wordbook:post_list')
+
 
 class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
     template_name = 'wordbook/register_list.html'

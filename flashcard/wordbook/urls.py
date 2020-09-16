@@ -15,4 +15,8 @@ urlpatterns = [
     path('registerlist/',views.MakeRegisterListView.as_view(),name='registerlist'),
     # path('registerlist/registered/',views.GetChecklist.as_view(),name='registered'),
     # path('learning/',views.GetAnswers.as_view(),name=''),
+    path('post_list/', views.MyPostListView.as_view(), name='post_list'),
+    path('post/<uuid:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('post/<uuid:pk>/edit', views.PostUpdateView.as_view(),name='post_update'),
+    path('post/<uuid:pk>/delete',views.PostDeleteView.as_view(),name='post_delete'),
 ]
