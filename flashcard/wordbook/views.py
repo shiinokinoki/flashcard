@@ -164,42 +164,63 @@ def makeQuestAtRandom(request):
     '''
         任意の単語数の問題を作成，辞書をJsonResponseでJsonとして返す．
     '''
+    debug = True
+    if debug == False:
+        num = 3
+        num_choices = 4
+        user = request.user
+        posts = Post.objects.order_by('?')[:num]
+        names = []
+        choices = []
+        ans = []
+        for i in posts:
+            names.append(i.values('name'))
+            choices_cand = Post.objects.order_by('?')[:num_choices-1]
+            cho = []
+            cho.append(i.values('meaning'))
+            for m in choices_cand:
+                cho.append(m.values('meaning'))
+            choices.append(cho)
+        
+        if len(choices)!=num_choices:
+            print('error')
+        random.shuffle(choices)
+        
+        for i in names:
+            tmp = []
+            for m in choices:
+                if m == i:
+                    tmp.append(True)
+                else:
+                    tmp.append(False)
+            ans.append(tmp)
 
-    num = 3
-    num_choices = 4
-    user = request.user
-    posts = Post.objects.order_by('?')[:num]
-    names = []
-    choices = []
-    ans = []
-    for i in posts:
-        names.append(i.values('name'))
-        choices_cand = Post.objects.order_by('?')[:num_choices-1]
-        cho = []
-        cho.append(i.values('meaning'))
-        for m in choices_cand:
-            cho.append(m.values('meaning'))
-        choices.append(cho)
+        data = {}
+        for li1,li2,li3 in zip(choices,ans,names):
+            dic1={}
+            dic1[ch[0]]=li1
+            dic1[ch[1]]=li2
+            data[li3]=[dic1]
     
-    if len(choices)!=num_choices:
-        print('error')
-    random.shuffle(choices)
-    
-    for i in names:
-        tmp = []
-        for m in choices:
-            if m == i:
-                tmp.append(True)
-            else:
-                tmp.append(False)
-        ans.append(tmp)
-
-    data = {}
-    for li1,li2,li3 in zip(choices,ans,names):
-        dic1={}
-        dic1[ch[0]]=li1
-        dic1[ch[1]]=li2
-        data[li3]=[dic1]
+    else:
+        data = {
+            'fact':
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['correct','wrong','wrong','wrong']
+                }],
+            'red' :
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','correct','wrong','wrong']
+                }],
+            'blue':
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','wrong','wrong','correct']
+                }],
+        }
+        
     _values = simplejson.dumps(data, ensure_ascii=False)
     return HttpResponse(_values, mimetype='wordbook/json;charset=utf-8')
 
