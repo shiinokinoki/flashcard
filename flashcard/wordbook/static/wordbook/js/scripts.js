@@ -49,56 +49,29 @@
     //question用
     ///////////////////
 
-    //jsonをgetする(ダミーデータ)
-    const tango_data  = {
-        'data' : 
-        [
-            {
-                'word': 'fact',
-                'mean': ['意味1','意味2','意味3','意味4'],
-                'flag': [true,false,false,false]
-            },
-            {
-                'word': 'red',
-                'mean': ['意味1','意味2','意味3','意味4'],
-                'flag': [false,false,true,false]
-            },
-            {
-                'word': 'blue'
-                'mean': ['意味1','意味2','意味3','意味4'],
-                'flag': [false,true,false,false]
-        }]};
 
     //カウント用変数
-    let cnt = 0;
+    var cnt = 0;
 
     function Rewrite(tango_data,cnt){
         //htmlを受け取ったデータで書き換える
         //単語名
-        let word_name = Object.keys(tango_data)[0];
-        $(".question-name").text(word_name);
+        $(".question-name").text(`${tango_data.data[cnt].word}`);
 
         ////
         console.log(cnt);
-        console.log(typeof(word_name));
-        console.log(`${Object.keys(tango_data)[0]}`);
-        console.log(`${tango_data.fact[0].mean[0]}`);
-        console.log(`${tango_data[1]}`);
-        console.log(`${tango_data.word_name[0].mean[0]}`);
+        console.log(`${tango_data.data[cnt].word}`);
+
         
         //mean名
-        $(".sbm-ans-btn0").text(`${tango_data[word_name].mean[0]}`);
-        $(".sbm-ans-btn1").text(`${tango_data[word_name].mean[1]}`);
-        $(".sbm-ans-btn2").text(`${tango_data[word_name].mean[2]}`);
-        $(".sbm-ans-btn3").text(`${tango_data[word_name].mean[3]}`);
+        for (let i = 0; i < 4; i++) {
+            $(`.sbm-ans-btn${i}`).text(`${tango_data.data[cnt].mean[i]}`); 
+        }
+        
         //flag名
-        $(".sbm-ans-btn0").attr("id",`${tango_data[word_name].flag[0]}`);
-        $(".sbm-ans-btn1").attr("id",`${tango_data[word_name].flag[1]}`);
-        $(".sbm-ans-btn2").attr("id",`${tango_data[word_name].flag[2]}`);
-        $(".sbm-ans-btn3").attr("id",`${tango_data[word_name].flag[3]}`);
-
-        //実験
-        $(".sbm-ans-btn0").text(`aiueo`);
+        for (let i = 0; i < 4; i++) {
+            $(`.sbm-ans-btn${i}`).attr("id",`${tango_data.data[cnt].flag[i]}`); 
+        }
 
         //解答をクリックすると正誤と答えが現れる
         $(".sbm-ans").click(function ()  {
@@ -111,35 +84,46 @@
         });
         
         //インクリメント
-        cnt = cnt + 1;
+        return cnt + 1;
     };
+
     window.onload = () => {
         console.log('コンソール画面に文字を表示');
-        const url = 'localhost:8080/wordbook/json/';
 
-        $.getJSON(url, function(result, status){
+        //json読み込み
+        var tango_data = JSON.parse($("#hello-data").text());
+        console.log(tango_data);
 
-            alert(result);
-            
-            });
-        Rewrite(tango_data,cnt);
-    }
-
-    //次へボタンで次の問題へ
+        cnt = Rewrite(tango_data,cnt);
+        
+        //次へボタンで次の問題へ
     $(".toNext").click(function ()  {
-        Rewrite(tango_data,cnt);
-        if (cnt == 3){
-            alert('おわりです');
+        //終了条件
+        if (cnt === 3){
+            $('.wrong-ans').hide();
+            $('.correct-ans').hide();
+            $('.result-ans').show();
+            return;
         }
+
+        //隠す
+        $('.wrong-ans').hide();
+        $('.correct-ans').hide();
+        cnt = Rewrite(tango_data,cnt);
+        
+        
     });
+    }
 
 
     //解答をクリックすると正誤と答えが現れる
     $(".sbm-ans").click(function ()  {
         if ($(this).attr('id')==='correct'){
+            $('.wrong-ans').hide();
             $('.correct-ans').show();
         }
         else{
+            $('.correct-ans').hide();
             $('.wrong-ans').show();
         }
     });
