@@ -142,7 +142,21 @@
     });
     }
 
+    //json 送信
+    $("#send-json").click(function(){
+        $.ajax({
+                url: "http://127.0.0.1:8000/wordbook/htmls/local_editpic/",//phpファイルのURL
+                type: "post",
+                data: {"word":"test"},
+                success: function(){	// 転送成功時.
+                console.log("success");	
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {	// 転送失敗時.
+                    console.log("error");
+                }
+            })
 
+    });
 
 
     // Collapse Navbar
