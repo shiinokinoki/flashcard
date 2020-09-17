@@ -85,11 +85,13 @@
     function SendJson(tango_data){
         var send_data = {"data": []};
         
-        for (let i = 0; i < tango_data.length; i++) {
-            send_data.data.push('');
-            console.log(send_data);
-            send_data[i].id = tango_data[i].id;
-            send_data[i].result = tango_data[i].result;   
+        console.log(tango_data);
+        console.log(tango_data.data.length);
+        for (let i = 0; i < tango_data.data.length; i++) {
+            send_data.data.push({"id":"nan","result":"nan"});
+            console.log(send_data.data);
+            send_data.data[i].id = tango_data.data[i].id;
+            send_data.data[i].result = tango_data.data[i].result;   
         }
         
         console.log(send_data);
