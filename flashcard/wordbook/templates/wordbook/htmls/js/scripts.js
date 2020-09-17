@@ -81,6 +81,12 @@
         return cnt + 1;
     };
 
+    //リザルト画面表示
+    function Result(){
+        $('.ans-page').hide();
+        $('.result-page').show();
+    };
+
     //問題データを送信する
     function SendJson(tango_data){
         var send_data = {"data": []};
@@ -129,7 +135,9 @@
             if (cnt === 3){
                 $('.wrong-ans').hide();
                 $('.correct-ans').hide();
-                $('.result-ans').show();
+
+                //リザルトを表示する
+                Result();
                 SendJson(tango_data);
                 return;
             }
@@ -144,17 +152,34 @@
 
     //json 送信
     $("#send-json").click(function(){
+        var JSONdata = {
+                value1: "a"
+        };
+
+        alert(JSON.stringify(JSONdata));
+
         $.ajax({
-                url: "http://127.0.0.1:8000/wordbook/htmls/local_editpic/",//phpファイルのURL
-                type: "post",
-                data: {"word":"test"},
-                success: function(){	// 転送成功時.
-                console.log("success");	
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {	// 転送失敗時.
-                    console.log("error");
-                }
-            })
+            type : 'post',
+            url : url,
+            data : JSON.stringify(JSONdata),
+            contentType: 'application/JSON',
+            dataType : 'JSON',
+            scriptCharset: 'utf-8',
+            success : function(data) {
+
+                // Success
+                alert("success");
+                alert(JSON.stringify(data));
+                $("#response").html(JSON.stringify(data));
+            },
+            error : function(data) {
+
+                // Error
+                alert("error");
+                alert(JSON.stringify(data));
+                $("#response").html(JSON.stringify(data));
+            }
+        });
 
     });
 

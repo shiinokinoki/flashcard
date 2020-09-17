@@ -144,43 +144,43 @@
 
     //json 送信
     $("#send-json").click(function(){
-        function getCookie(name) {
 
-            var cookieValue = null;
-    
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-    
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+        // 2 csrfを取得、設定する関数
+        function getCookie(key) {
+            var cookies = document.cookie.split(';');
+            for (var _i = 0, cookies_1 = cookies; _i < cookies_1.length; _i++) {
+                var cookie = cookies_1[_i];
+                var cookiesArray = cookie.split('=');
+                if (cookiesArray[0].trim() == key.trim()) {
+                    return cookiesArray[1]; // (key[0],value[1])
                 }
             }
-            return cookieValue;
-        };
-    
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            return '';
+        }
+        function csrfSetting() {
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+        }
 
+        // 3 POST以外は受け付けないようにする関数
         function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
-        $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-        });
+        // 4 POST先と送信したい値の設定
+        var post_url = "http://127.0.0.1:8040/wordbook/takepic/detimg/";
+        var data = {
+            'image': 'Hello',
+        };
 
-
-        $("#runTutorial_f, #tutorialLayer").on("submit", e => {
-
-        e.preventDefault();
+        // 5 csrfを設定する関数を実行して、POSTを実行
+        csrfSetting();
+        $.post(post_url, data);
 
     });
 
