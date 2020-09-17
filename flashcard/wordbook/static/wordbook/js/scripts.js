@@ -143,8 +143,7 @@
     }
 
     //json 送信
-    $("#send-json").click(function(){
-
+    function JsonSender(JSONdata){
         // 2 csrfを取得、設定する関数
         function getCookie(key) {
             var cookies = document.cookie.split(';');
@@ -181,8 +180,13 @@
         // 5 csrfを設定する関数を実行して、POSTを実行
         csrfSetting();
         $.post(post_url, data);
+    };
 
+    //#send-jsonで送信できるようにする
+    $("#send-json").click(function(){
+        JsonSender(JsonSender(JSONdata));
     });
+
 
 
     // Collapse Navbar

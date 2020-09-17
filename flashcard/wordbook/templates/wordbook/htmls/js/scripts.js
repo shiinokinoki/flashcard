@@ -188,34 +188,42 @@
 
     //json 送信
     function JsonSender(JSONdata){
-        var JSONdata = {
-                value1: "a"
+        // 2 csrfを取得、設定する関数
+        function getCookie(key) {
+            var cookies = document.cookie.split(';');
+            for (var _i = 0, cookies_1 = cookies; _i < cookies_1.length; _i++) {
+                var cookie = cookies_1[_i];
+                var cookiesArray = cookie.split('=');
+                if (cookiesArray[0].trim() == key.trim()) {
+                    return cookiesArray[1]; // (key[0],value[1])
+                }
+            }
+            return '';
+        }
+        function csrfSetting() {
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+        }
+
+        // 3 POST以外は受け付けないようにする関数
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        // 4 POST先と送信したい値の設定
+        var post_url = "http://127.0.0.1:8040/wordbook/takepic/detimg/";
+        var data = {
+            'image': 'Hello',
         };
 
-        alert(JSON.stringify(JSONdata));
-
-        $.ajax({
-            type : 'post',
-            url : url,
-            data : JSON.stringify(JSONdata),
-            contentType: 'application/JSON',
-            dataType : 'JSON',
-            scriptCharset: 'utf-8',
-            success : function(data) {
-
-                // Success
-                alert("success");
-                alert(JSON.stringify(data));
-                $("#response").html(JSON.stringify(data));
-            },
-            error : function(data) {
-
-                // Error
-                alert("error");
-                alert(JSON.stringify(data));
-                $("#response").html(JSON.stringify(data));
-            }
-        });
+        // 5 csrfを設定する関数を実行して、POSTを実行
+        csrfSetting();
+        $.post(post_url, data);
     };
 
     //#send-jsonで送信できるようにする
