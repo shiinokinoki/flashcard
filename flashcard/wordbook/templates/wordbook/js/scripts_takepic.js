@@ -60,6 +60,12 @@
 ///////////////////
 
 window.onload = () => {
+    ////
+    alert('おきてます');
+    console.log('おきてます');
+    console.log('コンソール画面に文字を表示');
+
+
     const video  = document.querySelector("#camera");
     const canvas = document.querySelector("#picture");
     const se     = document.querySelector('#se');
