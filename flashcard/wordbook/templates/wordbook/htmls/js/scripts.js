@@ -228,7 +228,7 @@
 
     //#send-jsonで送信できるようにする
     $("#send-json").click(function(){
-        JsonSender();
+        JsonSender(JsonSender(JSONdata));
     });
 
 

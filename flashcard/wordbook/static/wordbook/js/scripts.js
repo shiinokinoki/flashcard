@@ -81,6 +81,44 @@
         return cnt + 1;
     };
 
+    //リザルト画面表示
+    function Result(tango_data){
+        $('.ans-page').hide();
+        $('.result-page').show();
+
+        //総合得点
+        var scorecnt = 0
+        var maxscore = 0
+
+        //単語の表示
+        for (let i = 0; i < tango_data.data.length; i++) {
+            $(`.words${i}`).text(`${tango_data.data[i].word}`);
+            if (tango_data.data[i].result == "wrong"){
+                $(`.Icon${i}`).removeClass("fas fa-check-square text-primary mb-2"); 
+                $(`.Icon${i}`).addClass("fas fa-times-circle text-danger mb-2"); 
+            }
+            else{
+                scorecnt = scorecnt + 1;
+            };
+
+            maxscore = maxscore + 1;
+        }
+
+        //結果表示
+        $("#score1").text(scorecnt);
+        $("#score2").text(`/${maxscore}`);
+
+        //詳しく見るなら...
+        $("#detail").click(function(){
+            $("#result").toggle();
+        });
+        
+        
+
+        //TODO 自在にhtmlの数をjsで足す
+        
+    };
+
     //問題データを送信する
     function SendJson(tango_data){
         var send_data = {"data": []};
@@ -129,8 +167,12 @@
             if (cnt === 3){
                 $('.wrong-ans').hide();
                 $('.correct-ans').hide();
-                $('.result-ans').show();
-                SendJson(tango_data);
+
+                //リザルトを表示する
+                Result(tango_data);
+                $("#back-home").click(function(){
+                    SendJson(tango_data);
+                });
                 return;
             }
 
@@ -141,6 +183,8 @@
         
     });
     }
+
+
 
     //json 送信
     function JsonSender(JSONdata){
@@ -186,7 +230,6 @@
     $("#send-json").click(function(){
         JsonSender(JsonSender(JSONdata));
     });
-
 
 
     // Collapse Navbar
