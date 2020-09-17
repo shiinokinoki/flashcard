@@ -3,7 +3,7 @@
     * Copyright 2013-2020 Start Bootstrap
     * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-grayscale/blob/master/LICENSE)
     */
-    (function ($) {
+   (function ($) {
     "use strict"; // Start of use strict
 
     // Smooth scrolling using jQuery easing
@@ -64,7 +64,7 @@
                 'flag': [false,false,true,false]
             },
             {
-                'word': 'blue'
+                'word': 'blue',
                 'mean': ['意味1','意味2','意味3','意味4'],
                 'flag': [false,true,false,false]
         }]};
@@ -82,9 +82,8 @@
         console.log(cnt);
         console.log(typeof(word_name));
         console.log(`${Object.keys(tango_data)[0]}`);
-        console.log(`${tango_data.fact[0].mean[0]}`);
-        console.log(`${tango_data[1]}`);
-        console.log(`${tango_data.word_name[0].mean[0]}`);
+        console.log(`${tango_data.data}`);
+
         
         //mean名
         $(".sbm-ans-btn0").text(`${tango_data[word_name].mean[0]}`);
@@ -116,12 +115,6 @@
 
     window.onload = () => {
         console.log('コンソール画面に文字を表示');
-        $.getJSON(url, function(result, status){
-
-            alert(result[0].key0);
-            alert(result[0].key1);
-            
-            });
         Rewrite(tango_data,cnt);
     }
 

@@ -116,10 +116,10 @@
     window.onload = () => {
         console.log('コンソール画面に文字を表示');
         const url = 'localhost:8080/wordbook/json/';
+
         $.getJSON(url, function(result, status){
 
-            alert(result[0].key0);
-            alert(result[0].key1);
+            alert(result);
             
             });
         Rewrite(tango_data,cnt);
