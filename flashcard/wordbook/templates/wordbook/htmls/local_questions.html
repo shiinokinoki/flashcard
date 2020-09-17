@@ -58,8 +58,77 @@
                 </div>
             </div>
         </nav>
+        
         <!-- Masthead-->
-        <header class="masthead">
+        <header class="masthead" style="display: block;">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5 tango" id="question-num">1問目</h2>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5 tango">単語の意味を答えよ</h2>
+                    <h1 class="mx-auto my-0 text-uppercase question-name">問題の単語</h1>
+                    
+                        <div class="container">
+                            <hr class="my-4" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn0" id="wrong">解答1</a>
+                                </div>
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn1" id="wrong">解答2</a>
+                                </div>
+                            </div>
+                            <hr class="my-4" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn2" id="wrong">解答3</a>
+                                </div>
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn3" id="wrong">解答4</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!-- 改行 -->
+                    <hr class="my-4" />
+                    <!-- Main body -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 mb-3 mb-md-0">
+                                <div class="card py-1 h-100">
+                                    <div class="card-body text-center"></div>
+                                        <div class="correct-ans"  style="display: none;">
+                                            <i class="fas fa-check-square text-primary mb-2"></i>
+                                            <h4 class="text-uppercase m-0 ">正解です。</h4>
+                                            <hr class="my-4" />
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" >next</a>
+                                        </div>
+                                        <div class="wrong-ans"  style="display: none;">
+                                            <i class="fas fa-times-circle"></i>
+                                            <h4 class="text-uppercase m-0">不正解です。</h4>
+                                            <hr class="my-4" />
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" >next</a>
+                                    
+                                        </div>
+                                        <div class="result-ans"  style="display: none;">
+                                            <i class="fas fa-times-circle"></i>
+                                            <h4 class="text-uppercase m-0">終了です。</h4>
+                                            <hr class="my-4" />
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" href="local_result.html">next</a>
+                                    
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </header>
+
+        <header class="masthead" style="display: block;">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
                     <h2 class="text-white-50 mx-auto mt-2 mb-5 tango" id="question-num">1問目</h2>

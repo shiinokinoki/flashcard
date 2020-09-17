@@ -144,17 +144,43 @@
 
     //json 送信
     $("#send-json").click(function(){
-        $.ajax({
-                url: "http://127.0.0.1:8000/wordbook/htmls/local_editpic/",//phpファイルのURL
-                type: "post",
-                data: {"word":"test"},
-                success: function(){	// 転送成功時.
-                console.log("success");	
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {	// 転送失敗時.
-                    console.log("error");
+        function getCookie(name) {
+
+            var cookieValue = null;
+    
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+    
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
-            })
+            }
+            return cookieValue;
+        };
+    
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+        });
+
+
+        $("#runTutorial_f, #tutorialLayer").on("submit", e => {
+
+        e.preventDefault();
 
     });
 
