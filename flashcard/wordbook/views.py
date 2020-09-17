@@ -30,6 +30,7 @@ class MyNotebookListView(generic.ListView):
     '''
     ユーザーごとのホーム画面
     '''
+    template_name = 'wordbook/NoteBook_list.html'
     model = NoteBook
     def get_queryset(self):
         user = self.request.user
@@ -107,9 +108,9 @@ def makeregisterlist(request):
     template_name = 'wordbook/register_list.html'
     model = Post
     count =0
-    path = './wordbook/data/json/dict_sample.json'
+    path = './save.json'
     
-    # scanned_dic = readjson(path=path)
+    context = readjson(path=path)
     # word_list =[]
     # for word in scanned_dic:
     #     word_list.append(word['name'])
@@ -122,9 +123,11 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        posted_img = request.FILES['image']
-        cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
+        # posted_img = request.FILES.get('image')
+        # cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
+        path = './wordbook/pymodule/machine_learning/result.png'
         detector = All_process()
+        detector.run(img_path=path)
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
@@ -156,7 +159,7 @@ def getQuestResult(request):
     else:
         return redirect('wordbook:result')
         
-        
+
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
     
@@ -221,7 +224,6 @@ def makeQuestAtRandom(request):
                     'flag':['wrong','wrong','wrong','correct']
                 }],
         }
-        
     # _values = simplejson.dumps(data, ensure_ascii=False)
     
     return render(request, 'wordbook/questions.html', context=data)
