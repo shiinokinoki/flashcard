@@ -54,7 +54,7 @@ class After_ocr():
         wordを翻訳する．基本的には辞書を使って行うが，辞書になかった場合はgoogleの翻訳に頼る．
         '''
         word = '"'+word+'"'
-        conn = sqlite3.connect("./module/NL_processing/ejdict.sqlite3")
+        conn = sqlite3.connect("./wordbook/pymodule/machine_learning/module/NL_processing/ejdict.sqlite3")
         raw_meanings = list(conn.execute('select mean from items where word='+word))
         ans_meanings = []
         word = word.replace('"', '')
