@@ -7,6 +7,13 @@ flashcard/wordbook/__pycache__/admin.cpython-37.pyc
 flashcard/wordbook/__pycache__/models.cpython-37.pyc
 flashcard/wordbook/__pycache__/urls.cpython-37.pyc
 flashcard/wordbook/__pycache__/views.cpython-37.pyc
+venv
+*.pyc
+/.vscode
+__pycache__
+/static
+.DS_Store
+.gitignore
 /json-test/
 flashcard/flashcard/__pycache__/__init__.cpython-37.pyc
 flashcard/flashcard/__pycache__/settings.cpython-37.pyc

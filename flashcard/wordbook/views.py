@@ -1,46 +1,275 @@
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import generic
-from django.shortcuts import render
+from django.views.generic.edit import UpdateView, DeleteView
+from django.shortcuts import render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
-from .forms import UserCreateForm
-from wordbook.models import User, NoteBook, Post
+
+from .forms import UserCreateForm,NoteBookForm
+from .models import User, NoteBook, Post
+
 from wordbook.pymodule.read_json import ReadJson as readjson
+from wordbook.pymodule.machine_learning.detect import All_process
+from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
 
-
+import cv2
+import random
 
 User = get_user_model()
 
 class Top(generic.TemplateView):
+    '''
+    Topページ表示
+    '''
     template_name = 'top.html'
 
-class MyPage(generic.TemplateView):
-    template_name = 'page.html'
-
 class MyNotebookListView(generic.ListView):
+    '''
+    ユーザーごとのホーム画面
+    '''
+    template_name = 'wordbook/NoteBook_list.html'
     model = NoteBook
     def get_queryset(self):
         user = self.request.user
         return NoteBook.objects.filter(create_user=user)
 
-class MakeRegisterListView(LoginRequiredMixin, generic.View):
+class NotebookCreateView(generic.CreateView):
+    model = NoteBook
+    form_class = NoteBookForm
+    template_name = "wordbook/createNBform.html"
+    def get_form(self):
+        form = super(NotebookCreateView, self).get_form()
+        form.fields['title'].label = '単語帳名'
+        return form
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.create_user = self.request.user
+        post.save()
+        return redirect("wordbook:home")
+    
+class MyPostListView(generic.ListView):
+    '''
+    ユーザー単語全リスト
+    '''
     model = Post
+    template_name = 'wordbook/post_list.html'
     def get_queryset(self):
-        count =0
-        scanned_dic = readjson()
-        for word,meanings in scanned_dic.items():
-            for meaning in meanings:
-                count +=1
-                post = Post(name = word,meaning=meaning)
-                post.save()
         user = self.request.user
-        return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+        return Post.objects.filter(create_user=user)
+
+
+class PostDetailView(generic.DetailView):
+    '''
+    単語詳細
+    '''
+    model = Post
+    template_name = 'wordbook/post_detail.html'
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['name', 'meaning', 'notebook']
+    def get_success_url(self):
+        return reverse('wordbook:post_detail', kwargs={'pk': self.object.pk})
+
+
+class PostDeleteView(DeleteView):
+    '''
+    '''
+    model = Post
+    success_url = reverse_lazy('wordbook:post_list')
+
+
+
+# # class MakeRegisterListView(LoginRequiredMixin, generic.ListView):
+#     template_name = 'wordbook/register_list.html'
+#     model = Post
+#     def get_queryset(self):
+#         count =0
+#         path = './wordbook/data/json/dict_sample.json'
+#         scanned_dic = readjson(path=path)
+#         user = self.request.user
+#         for word in scanned_dic:
+#             for meaning in word['meaning']:
+#                 result, created = Post.objects.get_or_create(name = word['name'],meaning=meaning,create_user=user)
+#                 if created:
+#                     count +=1
+#         return Post.objects.filter(create_user=user).order_by('-date_joined')[:count]
+
+
+def makeregisterlist(request):
+    '''
+    認識結果のjsonを読み込んで辞書化，これをHTMLに渡す
+    とってきたjsonをそのままレスポンスしたい
+    '''
+    template_name = 'wordbook/register_list.html'
+    model = Post
+    count =0
+    path = './save.json'
+    
+    context = readjson(path=path)
+    # word_list =[]
+    # for word in scanned_dic:
+    #     word_list.append(word['name'])
+    # context = {
+    #     'word_list':word_list,
+    # }
+    return render(request, 'wordbook/register_list.html', context=context)
+
+
+
+def getimage(request):
+    if request.method == 'POST':
+        # posted_img = request.FILES.get('image')
+        # cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
+        path = './wordbook/pymodule/machine_learning/result.png'
+        detector = All_process()
+        detector.run(img_path=path)
+        return redirect('wordbook:registerlist')
+    else:
+        return redirect('wordbook:takepic')
+
+
+def getQuestResult(request):
+    '''
+    jsonは{'単語':'正誤'}で返してもらう
+    e-factorのパラメータ更新
+    '''
+    if request.method == 'POST':
+        user = request.user
+        names = request.FILES.keys()
+        ans_li = request.values()
+        posts = Post.objects.filter(create_user=user)
+        for word,ans in zip(names,ans_li):
+            post = posts.filter(name=word)[0]
+            _interval = post.interval
+            _e_factor = post.e_factor
+            if ans_li:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
+            else:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
+            post.interval = interval
+            pot.e_factor = e_factor
+            post.save()
+        
+        return redirect('wordbook:home')
+    else:
+        return redirect('wordbook:result')
+        
 
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
+    
+def makeQuestAtRandom(request):
+    '''
+        任意の単語数の問題を作成，辞書をJsonResponseでJsonとして返す．
+    '''
+    debug = True
+    if debug == False:
+        num = 3
+        num_choices = 4
+        user = request.user
+        posts = Post.objects.order_by('?')[:num]
+        names = []
+        choices = []
+        ans = []
+        for i in posts:
+            names.append(i.values('name'))
+            choices_cand = Post.objects.order_by('?')[:num_choices-1]
+            cho = []
+            cho.append(i.values('meaning'))
+            for m in choices_cand:
+                cho.append(m.values('meaning'))
+            choices.append(cho)
+        
+        if len(choices)!=num_choices:
+            print('error')
+        random.shuffle(choices)
+        
+        for i in names:
+            tmp = []
+            for m in choices:
+                if m == i:
+                    tmp.append(True)
+                else:
+                    tmp.append(False)
+            ans.append(tmp)
+
+        data = {}
+        for li1,li2,li3 in zip(choices,ans,names):
+            dic1={}
+            dic1[ch[0]]=li1
+            dic1[ch[1]]=li2
+            data[li3]=[dic1]
+    
+
+    else:
+        data = {
+            'fact':
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['correct','wrong','wrong','wrong']
+                }],
+            'red' :
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','correct','wrong','wrong']
+                }],
+            'blue':
+                [{
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','wrong','wrong','correct']
+                }],
+        }
+    # _values = simplejson.dumps(data, ensure_ascii=False)
+    
+    return render(request, 'wordbook/questions.html', context=data)
+
+
+
+def makeQuestMistake(request):
+    num = 3
+    num_choices = 4
+    user = request.user
+    posts = Post.objects.order_by('interval')[:num]
+    names = []
+    choices = []
+    ans = []
+    for i in posts:
+        names.append(i.values('name'))
+        choices_cand = Post.objects.order_by('?')[:num_choices-1]
+        cho = []
+        cho.append(i.values('meaning'))
+        for m in choices_cand:
+            cho.append(m.values('meaning'))
+        choices.append(cho)
+    
+    if len(choices)!=num_choices:
+        print('error')
+    random.shuffle(choices)
+    
+    for i in names:
+        tmp = []
+        for m in choices:
+            if m == i:
+                tmp.append(True)
+            else:
+                tmp.append(False)
+        ans.append(tmp)
+
+    data = {}
+    for li1,li2,li3 in zip(choices,ans,names):
+        dic1={}
+        dic1[ch[0]]=li1
+        dic1[ch[1]]=li2
+        data[li3]=[dic1]
+    return JsonResponse(data)
+
+    
+    
 
 
 #Auth認証 関連
@@ -58,11 +287,12 @@ class ProfileView(LoginRequiredMixin, generic.View):
 
 
 class DeleteView(LoginRequiredMixin, generic.View):
-
     def get(self, *args, **kwargs):
         user = User.objects.get(email=self.request.user.email)
         user.is_active = False
         user.save()
         auth_logout(self.request)
         return render(self.request,'registration/delete_complete.html')
+
+
 

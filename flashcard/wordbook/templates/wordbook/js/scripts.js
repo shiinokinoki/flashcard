@@ -6,6 +6,11 @@
     (function ($) {
     "use strict"; // Start of use strict
 
+    
+    ///////////////////
+    //全ページ対応
+    ///////////////////
+
     // Smooth scrolling using jQuery easing
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
         if (
@@ -40,21 +45,29 @@
     //スクロールスパイはメニュー(ナビゲーションバー、またはリストグループ)に応じて本文をスクロールします。
     //また、本文のスクロールを監視し、スクロールに応じてメニューの該当アイテムをアクティブにします。
     $("body").scrollspy({
-        target: "#mainNav",
-        offset: 100,
+        target:"#mainNav",
+        offset: 100
     });
+    
 
-    //解答をクリックすると正誤と答えが現れる
-    $(".sbm-ans").click(function ()  {
-        if ($(this).attr('id')==='correct'){
-            $('.correct-ans').show();
-        }
-        else{
-            $('.wrong-ans').show();
-        }
-    });
+    ///////////////////
+    //takepic用
+    ///////////////////
 
+    /*
+    window.onload = () => {
+        const url = "";
 
+        $.getJSON(url, function(result, status){
+            
+            //データを受け取った後の操作を書く
+            alert(result[0].key0);
+            
+            });
+    };
+    */
+
+    
     // Collapse Navbar
     var navbarCollapse = function () {
         if ($("#mainNav").offset().top > 100) {
@@ -68,3 +81,5 @@
     // Collapse the navbar when page is scrolled
     $(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
+
+

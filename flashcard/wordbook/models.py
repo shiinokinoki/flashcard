@@ -85,11 +85,11 @@ class Post(models.Model):
     meaning:和訳
     interval:次の復習までの時間(日)
     e_factor:アイテムの簡単さ 1.3~2.5
-    quo_res:アイテムへの回答の質　1~5
+    quo_res:アイテムへの回答の質　0~5
     accuracy:正答率
     date_joined:登録時間
     '''
-    Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     name = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
     meaning = models.CharField(verbose_name='和訳',max_length=100)
@@ -103,4 +103,6 @@ class Post(models.Model):
     notebook = models.ManyToManyField('NoteBook',blank=True)
     
     def __str__(self):
-        return self.word
+        return self.name
+    
+    

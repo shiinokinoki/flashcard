@@ -5,11 +5,10 @@
 
     <h5 class="card-title text-center">ログイン</h5>
     <form action="{% url 'login' %}" method="POST">
-        {% bootstrap_form form %}
+        {{form.as_p}}
         <button type="submit" class="btn btn-primary btn-block">ログイン</button>
         <input type="hidden" name="next" value="{{ next }}"/>
         {% csrf_token %}
-        {{ form.as_p }}
     </form>
     <a href="{% url 'password_reset' %}">パスワードをお忘れですか?</a>
 
