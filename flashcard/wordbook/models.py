@@ -85,7 +85,7 @@ class Post(models.Model):
     meaning:和訳
     interval:次の復習までの時間(日)
     e_factor:アイテムの簡単さ 1.3~2.5
-    quo_res:アイテムへの回答の質　1~5
+    quo_res:アイテムへの回答の質　0~5
     accuracy:正答率
     date_joined:登録時間
     '''

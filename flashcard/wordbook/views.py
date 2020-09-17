@@ -44,7 +44,7 @@ class NotebookCreateView(generic.CreateView):
         form.fields['title'].label = '単語帳名'
         return form
     def form_valid(self, form):
-        post = form.save(commit=Flase)
+        post = form.save(commit=False)
         post.create_user = self.request.user
         post.save()
         return redirect("wordbook:home")
@@ -133,6 +133,7 @@ def getimage(request):
 def getQuestResult(request):
     '''
     jsonは{'単語':'正誤'}で返してもらう
+    e-factorのパラメータ更新
     '''
     if request.method == 'POST':
         user = request.user
@@ -160,6 +161,10 @@ class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
     
 def makeQuestAtRandom(request):
+    '''
+        任意の単語数の問題を作成，辞書をJsonResponseでJsonとして返す．
+    '''
+
     num = 3
     num_choices = 4
     user = request.user
@@ -203,7 +208,7 @@ def makeQuestMistake(request):
     num = 3
     num_choices = 4
     user = request.user
-    posts = Post.objects.order_by('')[:num]
+    posts = Post.objects.order_by('interval')[:num]
     names = []
     choices = []
     ans = []
