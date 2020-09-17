@@ -82,9 +82,41 @@
     };
 
     //リザルト画面表示
-    function Result(){
+    function Result(tango_data){
         $('.ans-page').hide();
         $('.result-page').show();
+
+        //総合得点
+        var scorecnt = 0
+        var maxscore = 0
+
+        //単語の表示
+        for (let i = 0; i < tango_data.data.length; i++) {
+            $(`.words${i}`).text(`${tango_data.data[i].word}`);
+            if (tango_data.data[i].result == "wrong"){
+                $(`.Icon${i}`).removeClass("fas fa-check-square text-primary mb-2"); 
+                $(`.Icon${i}`).addClass("fas fa-times-circle text-danger mb-2"); 
+            }
+            else{
+                scorecnt = scorecnt + 1;
+            };
+
+            maxscore = maxscore + 1;
+        }
+
+        //結果表示
+        $("#score1").text(scorecnt);
+        $("#score2").text(`/${maxscore}`);
+
+        //詳しく見るなら...
+        $("#detail").click(function(){
+            $("#result").toggle();
+        });
+        
+        
+
+        //TODO 自在にhtmlの数をjsで足す
+        
     };
 
     //問題データを送信する
@@ -137,8 +169,10 @@
                 $('.correct-ans').hide();
 
                 //リザルトを表示する
-                Result();
-                SendJson(tango_data);
+                Result(tango_data);
+                $("#back-home").click(function(){
+                    SendJson(tango_data);
+                });
                 return;
             }
 
@@ -150,8 +184,10 @@
     });
     }
 
+
+
     //json 送信
-    $("#send-json").click(function(){
+    function JsonSender(JSONdata){
         var JSONdata = {
                 value1: "a"
         };
@@ -180,7 +216,11 @@
                 $("#response").html(JSON.stringify(data));
             }
         });
+    };
 
+    //#send-jsonで送信できるようにする
+    $("#send-json").click(function(){
+        JsonSender();
     });
 
 
