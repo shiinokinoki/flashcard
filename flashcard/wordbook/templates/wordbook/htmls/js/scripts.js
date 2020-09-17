@@ -116,6 +116,12 @@
 
     window.onload = () => {
         console.log('コンソール画面に文字を表示');
+        $.getJSON(url, function(result, status){
+
+            alert(result[0].key0);
+            alert(result[0].key1);
+            
+            });
         Rewrite(tango_data,cnt);
     }
 
