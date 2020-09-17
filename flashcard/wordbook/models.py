@@ -89,7 +89,7 @@ class Post(models.Model):
     accuracy:正答率
     date_joined:登録時間
     '''
-    Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     name = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
     meaning = models.CharField(verbose_name='和訳',max_length=100)
