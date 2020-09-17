@@ -135,4 +135,4 @@ window.onload = () => {
 
     tenso(picture);
     });
-  };
+};
