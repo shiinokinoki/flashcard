@@ -51,22 +51,23 @@
 
     //jsonをgetする(ダミーデータ)
     const tango_data  = {
-        'fact' : 
-        [{
-            'mean': ['意味1','意味2','意味3','意味4'],
-            'flag': [true,false,false,false]
-        }],
-        'red' : 
-        [{
-            'mean': ['意味1','意味2','意味3','意味4'],
-            'flag': [false,false,true,false]
-        }],
-        'blue' :
-        [{
-            'mean': ['意味1','意味2','意味3','意味4'],
-            'flag': [false,true,false,false]
-        }],
-    }
+        'data' : 
+        [
+            {
+                'word': 'fact',
+                'mean': ['意味1','意味2','意味3','意味4'],
+                'flag': [true,false,false,false]
+            },
+            {
+                'word': 'red',
+                'mean': ['意味1','意味2','意味3','意味4'],
+                'flag': [false,false,true,false]
+            },
+            {
+                'word': 'blue'
+                'mean': ['意味1','意味2','意味3','意味4'],
+                'flag': [false,true,false,false]
+        }]};
 
     //カウント用変数
     let cnt = 0;
