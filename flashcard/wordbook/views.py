@@ -200,7 +200,8 @@ def makeQuestAtRandom(request):
         dic1[ch[0]]=li1
         dic1[ch[1]]=li2
         data[li3]=[dic1]
-    return JsonResponse(data=data)
+    _values = simplejson.dumps(data, ensure_ascii=False)
+    return HttpResponse(_values, mimetype='wordbook/json;charset=utf-8')
 
 
 
