@@ -45,13 +45,13 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger">Edit</a>
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:post_list'%}">Edit</a>
                                 </div>
                                 <div class="col-md-4 mb-3 mb-md-0">
                                     <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:takepic' %}">Take a Picture</a>
                                 </div>
                                 <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger">Others</a>
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:createnotebook' %}">Create Tangocho</a>
                                 </div>
                             </div>
                         </div>

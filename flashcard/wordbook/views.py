@@ -8,11 +8,12 @@ from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 
-from .forms import UserCreateForm
+from .forms import UserCreateForm,NoteBookForm
 from .models import User, NoteBook, Post
 
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
+from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
 
 import cv2
 import random
@@ -34,7 +35,20 @@ class MyNotebookListView(generic.ListView):
         user = self.request.user
         return NoteBook.objects.filter(create_user=user)
 
-
+class NotebookCreateView(generic.CreateView):
+    model = NoteBook
+    form_class = NoteBookForm
+    template_name = "wordbook/createNBform.html"
+    def get_form(self):
+        form = super(NotebookCreateView, self).get_form()
+        form.fields['title'].label = '単語帳名'
+        return form
+    def form_valid(self, form):
+        post = form.save(commit=Flase)
+        post.create_user = self.request.user
+        post.save()
+        return redirect("wordbook:home")
+    
 class MyPostListView(generic.ListView):
     '''
     ユーザー単語全リスト
@@ -48,6 +62,7 @@ class MyPostListView(generic.ListView):
 
 class PostDetailView(generic.DetailView):
     '''
+    単語詳細
     '''
     model = Post
     template_name = 'wordbook/post_detail.html'
@@ -56,9 +71,13 @@ class PostDetailView(generic.DetailView):
 class PostUpdateView(UpdateView):
     model = Post
     fields = ['name', 'meaning', 'notebook']
+    def get_success_url(self):
+        return reverse('wordbook:post_detail', kwargs={'pk': self.object.pk})
 
 
 class PostDeleteView(DeleteView):
+    '''
+    '''
     model = Post
     success_url = reverse_lazy('wordbook:post_list')
 
@@ -83,18 +102,20 @@ class PostDeleteView(DeleteView):
 def makeregisterlist(request):
     '''
     認識結果のjsonを読み込んで辞書化，これをHTMLに渡す
+    とってきたjsonをそのままレスポンスしたい
     '''
     template_name = 'wordbook/register_list.html'
     model = Post
     count =0
     path = './wordbook/data/json/dict_sample.json'
-    scanned_dic = readjson(path=path)
-    word_list =[]
-    for word in scanned_dic:
-        word_list.append(word['name'])
-    context = {
-        'word_list':word_list,
-    }
+    
+    # scanned_dic = readjson(path=path)
+    # word_list =[]
+    # for word in scanned_dic:
+    #     word_list.append(word['name'])
+    # context = {
+    #     'word_list':word_list,
+    # }
     return render(request, 'wordbook/register_list.html', context=context)
 
 
@@ -104,23 +125,44 @@ def getimage(request):
         posted_img = request.FILES['image']
         cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
         detector = All_process()
-        return redirect('registerlist/')
-    # else:
-    #     return redirect('https://google.com')
+        return redirect('wordbook:registerlist')
+    else:
+        return redirect('wordbook:takepic')
 
 
-class GetAnswers(generic.ListView):
-    def post(self, request, *args, **kwargs):
-        checks_value = request.POST.getlist('checks[]')
+def getQuestResult(request):
+    '''
+    jsonは{'単語':'正誤'}で返してもらう
+    '''
+    if request.method == 'POST':
+        user = request.user
+        names = request.FILES.keys()
+        ans_li = request.values()
+        posts = Post.objects.filter(create_user=user)
+        for word,ans in zip(names,ans_li):
+            post = posts.filter(name=word)[0]
+            _interval = post.interval
+            _e_factor = post.e_factor
+            if ans_li:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
+            else:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
+            post.interval = interval
+            pot.e_factor = e_factor
+            post.save()
+        
+        return redirect('wordbook:home')
+    else:
+        return redirect('wordbook:result')
         
         
 class TakePicture(generic.TemplateView):
     template_name = 'takepic.html'
     
-def makeQuestAtRandom(self,request):
+def makeQuestAtRandom(request):
     num = 3
     num_choices = 4
-    user = self.request.user
+    user = request.user
     posts = Post.objects.order_by('?')[:num]
     names = []
     choices = []
@@ -152,13 +194,15 @@ def makeQuestAtRandom(self,request):
         dic1={}
         dic1[ch[0]]=li1
         dic1[ch[1]]=li2
-        data[li3]=dic1
-    return JsonResponse(data)
+        data[li3]=[dic1]
+    return JsonResponse(data=data)
 
-def makeQuestMistake(self,request):
+
+
+def makeQuestMistake(request):
     num = 3
     num_choices = 4
-    user = self.request.user
+    user = request.user
     posts = Post.objects.order_by('')[:num]
     names = []
     choices = []
@@ -190,10 +234,11 @@ def makeQuestMistake(self,request):
         dic1={}
         dic1[ch[0]]=li1
         dic1[ch[1]]=li2
-        data[li3]=dic1
+        data[li3]=[dic1]
     return JsonResponse(data)
 
-
+    
+    
 
 
 #Auth認証 関連

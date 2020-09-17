@@ -19,6 +19,5 @@ urlpatterns = [
     path('post/<uuid:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<uuid:pk>/edit', views.PostUpdateView.as_view(),name='post_update'),
     path('post/<uuid:pk>/delete',views.PostDeleteView.as_view(),name='post_delete'),
-    # path('/questions/<>/rundom/',views.GetAnswers.as_view(),name=''),
-    # path('/questions/<>/mistake/',views.GetAnswers.as_view(),name=''),
+    path('home/createnb/',views.NotebookCreateView.as_view(),name='createnotebook'),
 ]

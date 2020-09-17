@@ -43,10 +43,10 @@ class Item:
         self.interval, self.e_factor = calculate_interval_and_e_factor(self.interval, self.e_factor, quality_of_response)
 
 
-item = Item()
-q_responses = [0,1,1,3,4,5,5,5,5,1,2,5,5,5]
-for q in q_responses:
-    print(item.interval)
-    item.update_interval_and_e_factor(q)
+# item = Item()
+# q_responses = [0,1,1,3,4,5,5,5,5,1,2,5,5,5]
+# for q in q_responses:
+#     print(item.interval)
+#     item.update_interval_and_e_factor(q)
 
 #正解してるとインターバルはすぐおおきくなるが、間違えるとまたでてくるようになる
