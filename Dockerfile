@@ -15,4 +15,7 @@ ADD . .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD gunicorn flashcard.wsgi:application
+RUN useradd -m myuser
+USER myuser
+
+CMD exec gunicorn -b 0.0.0.0:$PORT flashcard.wsgi:application
