@@ -202,6 +202,7 @@ def makeQuestAtRandom(request):
             dic1[ch[1]]=li2
             data[li3]=[dic1]
     
+
     else:
         data = {
             'fact':
@@ -221,8 +222,9 @@ def makeQuestAtRandom(request):
                 }],
         }
         
-    _values = simplejson.dumps(data, ensure_ascii=False)
-    return HttpResponse(_values, mimetype='wordbook/json;charset=utf-8')
+    # _values = simplejson.dumps(data, ensure_ascii=False)
+    
+    return render(request, 'wordbook/questions.html', context=data)
 
 
 
