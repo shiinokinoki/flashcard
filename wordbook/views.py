@@ -127,65 +127,65 @@ def makeregisterlist(request):
     
     data["pagename"] = "register_list"
     data["data"] = dic_li
-    data["url"] = ''
+    data["url"] = 'registering/'
     context = {
         "value":data,
     }
     return render(request, 'wordbook/register_list.html',context=context)
 
-def upload(request):
-    if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            data = {
-                'pagename':'registerlist',
-                'url':'registerlist/',
-            }
-            context = {'value':data}
-            path = './wordbook/pymodule/machine_learning/receive.png'
-            detector = All_process()
-            detector.run(img_path=path)
-            word_li = readjson(path=path)
-            data = {}
-            dic_li = []
-            for i,d in enumerate(word_li):
-                dic = {}
-                dic['id'] = i
-                dic['word'] = d['name']
-                dic['mean'] = d['meaning']
-                dic_li.append(dic)
+# def upload(request):
+#     if request.method == "POST":
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             data = {
+#                 'pagename':'registerlist',
+#                 'url':'registerlist/',
+#             }
+#             context = {'value':data}
+#             path = './wordbook/pymodule/machine_learning/receive.png'
+#             detector = All_process()
+#             detector.run(img_path=path)
+#             word_li = readjson(path=path)
+#             data = {}
+#             dic_li = []
+#             for i,d in enumerate(word_li):
+#                 dic = {}
+#                 dic['id'] = i
+#                 dic['word'] = d['name']
+#                 dic['mean'] = d['meaning']
+#                 dic_li.append(dic)
             
-            data["pagename"] = "registerlist"
-            data["data"] = dic_li
-            data["url"] = 'registering/'
-            context = {
-                "value":data,
-            }
-            return render(request, 'wordbook/register_list.html',context=context)
-    else:
-        form = ImageForm()
-
-    context = {'form':form}
-    return render(request, 'takepic.html', context)
-
-# def getimage(request):
-#     if request.method == 'POST':
-#         img_str = request.Form['image']
-#         # path = './test_img.txt'
-#         # with open(path,mode = 'w') as f:
-#         #     f.write(img_str)
-#         posted_img = base64.b64decode(img_str)
-#         jpg=np.frombuffer(posted_img,dtype=np.uint8)
-#         #raw image <- jpg
-#         img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
-#         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
-#         path = './wordbook/pymodule/machine_learning/receive.png'
-#         detector = All_process()
-#         detector.run(img_path=path)
-#         return redirect('wordbook:registerlist')
+#             data["pagename"] = "registerlist"
+#             data["data"] = dic_li
+#             data["url"] = 'registering/'
+#             context = {
+#                 "value":data,
+#             }
+#             return render(request, 'wordbook/register_list.html',context=context)
 #     else:
-#         return redirect('wordbook:takepic')
+#         form = ImageForm()
+
+#     context = {'form':form}
+#     return render(request, 'takepic.html', context)
+
+def getimage(request):
+    if request.method == 'POST':
+        img_str = request.Form['image']
+        # path = './test_img.txt'
+        # with open(path,mode = 'w') as f:
+        #     f.write(img_str)
+        posted_img = base64.b64decode(img_str)
+        jpg=np.frombuffer(posted_img,dtype=np.uint8)
+        #raw image <- jpg
+        img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
+        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
+        path = './wordbook/pymodule/machine_learning/receive.png'
+        detector = All_process()
+        detector.run(img_path=path)
+        return redirect('wordbook:registerlist')
+    else:
+        return redirect('wordbook:takepic')
 
 def getRegister(request):
     if request.method == 'POST':
