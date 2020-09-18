@@ -75,8 +75,7 @@ class PostDetailView(generic.DetailView):
 class PostUpdateView(UpdateView):
     model = Post
     fields = ['name', 'meaning', 'notebook']
-    def get_success_url(self):
-        return reverse('wordbook:post_detail', kwargs={'pk': self.object.pk})
+    success_url = reverse_lazy('wordbook:post_list')
 
 
 class PostDeleteView(DeleteView):
@@ -163,7 +162,7 @@ def getRegister(request):
         json_data = json.loads(json_str)['data']
         for item in json_data:
             p = Post.objects.create(name=item['word'],meaning=item['mean'])
-        return redirect('wordbook:registerlist')
+        return redirect('wordbook:home')
     else:
         return redirect('wordbook:takepic')
 
@@ -204,17 +203,17 @@ def takepicture(request):
     context = {'value':data}
     return render(request, 'takepic.html',context=context)
     
-def makeQuestAtRandom(request,primary_key):
+def makeQuestAtRandom(request,pk):
     '''
         任意の単語数の問題を作成，辞書をJsonResponseでJsonとして返す．
     '''
-    debug = True
+    debug = False
     if debug == False:
         num_word = 3 #問題の単語数
         num_choices = 4 # 選択肢の数
         user = request.user  #現在のユーザ
         try:
-            posts = Post.objects.filter(notebook__pk=primary_key).order_by('?')[:num_word]  #必要とする単語数分のデータ
+            posts = Post.objects.filter(notebook__pk=pk).order_by('?')[:num_word]  #必要とする単語数分のデータ
         except:
             raise Http404('not exist')
 
@@ -222,36 +221,36 @@ def makeQuestAtRandom(request,primary_key):
         means = []
         flags = []
         # ids = []
-
+        corrects = []
+        
         if Post.objects.all().count() < num_choices:
                 raise Http404('not exist')
-
         for post in posts:
-            names.append(post.values('name'))
+            names.append(post.name)
+            corrects.append(post.meaning)
             while True:
                 #単語がダブらないようにする．
                 flag=True
                 choices_cand = Post.objects.order_by('?')[:num_choices - 1]
                 for meaning in choices_cand:
-                    if names[-1] == meaning.values('meaning'):
+                    if corrects[-1] == meaning.meaning:
                         flag = False
                         break
                 if flag:
                     break
                         
             choice_mean = []
-            choice_mean.append(post.values('meaning'))
+            choice_mean.append(post.meaning)
             for meaning in choices_cand:
-                choice_mean.append(meaning.values('meaning'))
+                choice_mean.append(meaning.meaning)
+            random.shuffle(choice_mean)
             means.append(choice_mean)
             # ids.append(post.values('id'))
         
-        random.shuffle(means)
-        
-        for name in names:
+        for correct,choices in zip(corrects,means):
             correct_or_wrong = []
-            for mean in means:
-                if mean == name:
+            for choice in choices:
+                if choice == correct:
                     correct_or_wrong.append('correct')
                 else:
                     correct_or_wrong.append('wrong')

@@ -59,6 +59,7 @@
                                 <div class="col-md-4 mb-3 mb-md-0">
                                     <a class="btn btn-success btn-lg js-scroll-trigger" id="send-json" >Others</a>
                                 </div>
+                                
                             </div>
                         </div>
                                 
@@ -83,9 +84,9 @@
                                 <h4 class="text-uppercase m-0">{{ item.title }}</h4>
                                 <hr class="my-4" />
                                 <div class="small text-black-50">
-                                    <a href="{% url 'wordbook:question'%}">Rundom</a>
+                                    <a href="{% url 'wordbook:question' item.pk %}">Random</a>
                                 </div>
-                                <a href="/wordbook/questions/{{ item.id }}/mistake/">Machigaeyasui</a>
+                                <!-- <a href="/wordbook/questions/{{ item.id }}/mistake/">Machigaeyasui</a> -->
                             </div>
                         </div>
                     </div>
