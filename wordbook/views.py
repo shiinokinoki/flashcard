@@ -141,8 +141,13 @@ def getimage(request):
         posted_img = request.FILES.get('image')
         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
         path = './wordbook/pymodule/machine_learning/receive.png'
+<<<<<<< HEAD
         #detector = All_process()
         #detector.run(img_path=path)
+=======
+        detector = All_process()
+        detector.run(img_path=path)
+>>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
@@ -155,8 +160,12 @@ def getQuestResult(request):
     '''
     if request.method == 'POST':
         user = request.user
+<<<<<<< HEAD
         data = request.form
         data1 = data.get("data")
+=======
+        data = request.FILES.get("data")
+>>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
         path = './test.txt'
         with open(path,mode = 'w') as f:
             f.write(data)
@@ -233,11 +242,26 @@ def makeQuestAtRandom(request):
             "data":
             [
                 {
+<<<<<<< HEAD
                     "id": "0001",
                     "word": "fact",
                     "mean": ["真実","顔","太る","速い"],
                     "flag": ["correct","wrong","wrong","wrong"],
                     "result": "nan"
+=======
+                    'id':0,
+                    'word':'fact',
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['correct','wrong','wrong','wrong'],
+                    'result':'nan',
+                },
+                {
+                    'id':1,
+                    'word':'red',
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','correct','wrong','wrong'],
+                    'result':'nan',
+>>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
                 },
                 {
                     "id": "0002",
@@ -258,6 +282,12 @@ def makeQuestAtRandom(request):
     context = {
         "value":data,
         }
+<<<<<<< HEAD
+=======
+    context = {
+        "value":data,
+        }
+>>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
     
     return render(request, 'wordbook/questions.html',context=context)
 
