@@ -388,7 +388,7 @@ window.onload = () => {
             var cur_url = URLJoin(root_url, "wordbook","takepic","detimg");
             // 4 POST先と送信したい値の設定
             var post_url = cur_url+"/";
-            var data = {"image":picture};
+            var data = fd;
     
             // 5 csrfを設定する関数を実行して、POSTを実行
             csrfSetting();
