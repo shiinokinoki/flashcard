@@ -138,11 +138,11 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        # posted_img = request.FILES.get('image')
-        # cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
-        path = './wordbook/pymodule/machine_learning/result.png'
-        detector = All_process()
-        detector.run(img_path=path)
+        posted_img = request.FILES.get('image')
+        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
+        path = './wordbook/pymodule/machine_learning/receive.png'
+        #detector = All_process()
+        #detector.run(img_path=path)
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
