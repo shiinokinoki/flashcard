@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1>CreateView新規作成画面</h1>
-    <form method="post" novalidate>
+    <form method="post" novalidate id='tangocho'>
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="保存">
