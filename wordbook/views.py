@@ -13,7 +13,7 @@ from .models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
 from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
-
+from django.http import Http404
 import cv2
 import random
 import json
