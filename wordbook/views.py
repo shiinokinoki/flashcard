@@ -128,9 +128,11 @@ def makeregisterlist(request):
     
     data["pagename"] = "register_list"
     data["data"] = dic_li
+    context = {
+        "value":data,
+    }
 
-
-    return render(request, 'wordbook/register_list.html',context=data)
+    return render(request, 'wordbook/register_list.html',context=context)
 
 
 
