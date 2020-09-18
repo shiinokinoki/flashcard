@@ -139,7 +139,7 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        posted_img = request.body.
+        posted_img = request.files['image']
         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
         path = './wordbook/pymodule/machine_learning/receive.png'
         detector = All_process()
