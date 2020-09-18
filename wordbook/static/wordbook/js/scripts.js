@@ -139,9 +139,39 @@
     window.onload = () => {
         console.log('コンソール画面に文字を表示');
 
+        //tango_dataの宣言
+        var tango_data;
+
+        //ダミーデータ
+        tango_data = {
+            "ver": "question",
+            "data": 
+            [
+                {
+                    "id": "0001",
+                    "word": "fact",
+                    "mean": ["真実","顔","太る","速い"],
+                    "flag": ["correct","wrong","wrong","wrong"],
+                    "result": "nan"
+                },
+                {
+                    "id": "0002",
+                    "word": "red",
+                    "mean": ["黄","青","赤","緑"],
+                    "flag": ["wrong","wrong","correct","wrong"],
+                    "result": "nan"
+                },
+                {
+                    "id": "0003",
+                    "word": "blue",
+                    "mean": ["白","青","黒","紫"],
+                    "flag": ["wrong","correct","wrong","wrong"],
+                    "result": "nan"
+        }]};
         //json読み込み
-        var tango_data = JSON.parse($("#hello-data").text());
+        tango_data = JSON.parse($("#hello-data").text());
         console.log(tango_data);
+        
 
         cnt = Rewrite(tango_data,cnt);
 
