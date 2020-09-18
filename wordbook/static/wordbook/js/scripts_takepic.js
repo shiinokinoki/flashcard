@@ -307,8 +307,8 @@ window.onload = () => {
       video: {
         width: { ideal: 4096 },
         height: { ideal: 2160 } ,
-        // facingMode: "user"   // フロントカメラを利用する
-        facingMode: { exact: "environment" }  // リアカメラを利用する場合
+        facingMode: "user"   // フロントカメラを利用する
+        // facingMode: { exact: "environment" }  // リアカメラを利用する場合
       }
     };
   
