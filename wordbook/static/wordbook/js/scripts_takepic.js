@@ -305,8 +305,8 @@ window.onload = () => {
     const constraints = {
       audio: false,
       video: {
-        width: { ideal: 4096 },
-        height: { ideal: 2160 } ,
+        width: 1280,
+        height: 720,
         facingMode: "user"   // フロントカメラを利用する
         // facingMode: { exact: "environment" }  // リアカメラを利用する場合
       }
@@ -339,7 +339,8 @@ window.onload = () => {
     }, 500);
 
     // canvasに画像を貼り付ける
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    console.log(`${canvas.width}, ${canvas.height}`);
+    ctx.drawImage(video, 0, 0, constraints.video.width, constraints.video.height);
 
     $("#send-pic").click(function(){
         var base64 = canvas.toDataURL('image/jpg');	
