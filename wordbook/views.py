@@ -153,7 +153,6 @@ def getRegister(request):
         user = request.user
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
-        
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
@@ -191,8 +190,10 @@ def getQuestResult(request):
         return redirect('wordbook:result')
         
 
-class TakePicture(generic.TemplateView):
-    template_name = 'takepic.html'
+def takepicture(request):
+    data = {'url':'takepic/','pagename':'takepic'}
+    context = {'value',data}
+    render(request, 'takepic.html',context=context)
     
 def makeQuestAtRandom(request):
     '''
