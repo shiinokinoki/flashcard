@@ -8,8 +8,8 @@ from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 
-from .forms import UserCreateForm,NoteBookForm,ImageForm
-from .models import User, NoteBook, Post, Image
+from .forms import UserCreateForm,NoteBookForm
+from .models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
 from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
@@ -78,7 +78,6 @@ class PostUpdateView(UpdateView):
 
 
 class PostDeleteView(DeleteView):
-
     model = Post
     success_url = reverse_lazy('wordbook:post_list')
 
@@ -111,12 +110,7 @@ def makeregisterlist(request):
     path = './save.json'
     
     word_li = readjson(path=path)
-    # word_list =[]
-    # for word in scanned_dic:
-    #     word_list.append(word['name'])
-    # context = {
-    #     'word_list':word_list,
-    # }
+
     data = {}
     dic_li = []
     for i,d in enumerate(word_li):
@@ -125,31 +119,30 @@ def makeregisterlist(request):
         dic['word'] = d['name']
         dic['mean'] = d['meaning']
         dic_li.append(dic)
-    
     data["pagename"] = "register_list"
     data["data"] = dic_li
+    data["url"] = 'registering/'
     context = {
         "value":data,
     }
-
     return render(request, 'wordbook/register_list.html',context=context)
 
-def upload(request):
-    if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            data = {
-                'pagename':'registerlist',
-                'url':'registerlist/',
-            }
-            context = {'value':data}
-            return render(request, 'wordbook/register_list.html',context=context)
-    else:
-        form = ImageForm()
+# def upload(request):
+#     if request.method == "POST":
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             data = {
+#                 'pagename':'registerlist',
+#                 'url':'registerlist/',
+#             }
+#             context = {'value':data}
+#             return render(request, 'wordbook/register_list.html',context=context)
+#     else:
+#         form = ImageForm()
 
-    context = {'form':form}
-    return render(request, 'takepic.html', context)
+#     context = {'form':form}
+#     return render(request, 'takepic.html', context)
 
 def getimage(request):
     if request.method == 'POST':
@@ -180,7 +173,7 @@ def getRegister(request):
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
         for item in json_data:
-            p = Post.objects.create(name=item['word'],meaning=item['mean'])
+            p = Post.objects.create(name=item['id'],meaning=item['mean'],create_user=user)
         return redirect('wordbook:home')
     else:
         return redirect('wordbook:takepic')

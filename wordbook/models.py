@@ -72,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class NoteBook(models.Model):
     '''単語帳のモデル'''
-    id = models.IntegerField(primary_key=True,editable=False)
+    # id = models.IntegerField(primary_key=True,editable=False)
     title  = models.CharField(max_length=100)
     create_user = models.ForeignKey(get_user_model(),null=True,on_delete=models.CASCADE)
     context = models.TextField(null=True,blank=True)
@@ -105,10 +105,3 @@ class Post(models.Model):
     
     def __str__(self):
         return self.name
-    
-class Image(models.Model):
-    picture = models.ImageField(upload_to='images/')
-    title = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.title
