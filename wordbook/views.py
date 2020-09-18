@@ -8,9 +8,8 @@ from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 
-from .forms import UserCreateForm,NoteBookForm
-from .models import User, NoteBook, Post
-
+from .forms import UserCreateForm,NoteBookForm,ImageForm
+from .models import User, NoteBook, Post, Image
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
 from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
@@ -135,7 +134,22 @@ def makeregisterlist(request):
 
     return render(request, 'wordbook/register_list.html',context=context)
 
+def upload(request):
+    if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            data = {
+                'pagename':'registerlist',
+                'url':'registerlist/',
+            }
+            context = {'value':data}
+            return render(request, 'wordbook/register_list.html',context=context)
+    else:
+        form = ImageForm()
 
+    context = {'form':form}
+    return render(request, 'takepic.html', context)
 
 # def getimage(request):
 #     if request.method == 'POST':
