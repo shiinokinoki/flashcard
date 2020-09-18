@@ -204,48 +204,74 @@ def takepicture(request):
     context = {'value':data}
     return render(request, 'takepic.html',context=context)
     
-def makeQuestAtRandom(request):
+def makeQuestAtRandom(request,primary_key):
     '''
         任意の単語数の問題を作成，辞書をJsonResponseでJsonとして返す．
     '''
     debug = True
     if debug == False:
-        num = 3
-        num_choices = 4
-        user = request.user
-        posts = Post.objects.order_by('?')[:num]
+        num_word = 3 #問題の単語数
+        num_choices = 4 # 選択肢の数
+        user = request.user  #現在のユーザ
+        try:
+            posts = Post.objects.filter(notebook__pk=primary_key).order_by('?')[:num_word]  #必要とする単語数分のデータ
+        except:
+            raise Http404('not exist')
+
         names = []
-        choices = []
-        ans = []
-        for i in posts:
-            names.append(i.values('name'))
-            choices_cand = Post.objects.order_by('?')[:num_choices-1]
-            cho = []
-            cho.append(i.values('meaning'))
-            for m in choices_cand:
-                cho.append(m.values('meaning'))
-            choices.append(cho)
+        means = []
+        flags = []
+        # ids = []
+
+        if Post.objects.all().count() < num_choices:
+                raise Http404('not exist')
+
+        for post in posts:
+            names.append(post.values('name'))
+            while True:
+                #単語がダブらないようにする．
+                flag=True
+                choices_cand = Post.objects.order_by('?')[:num_choices - 1]
+                for meaning in choices_cand:
+                    if names[-1] == meaning.values('meaning'):
+                        flag = False
+                        break
+                if flag:
+                    break
+                        
+            choice_mean = []
+            choice_mean.append(post.values('meaning'))
+            for meaning in choices_cand:
+                choice_mean.append(meaning.values('meaning'))
+            means.append(choice_mean)
+            # ids.append(post.values('id'))
         
-        if len(choices)!=num_choices:
-            print('error')
-        random.shuffle(choices)
+        random.shuffle(means)
         
-        for i in names:
-            tmp = []
-            for m in choices:
-                if m == i:
-                    tmp.append(True)
+        for name in names:
+            correct_or_wrong = []
+            for mean in means:
+                if mean == name:
+                    correct_or_wrong.append('correct')
                 else:
-                    tmp.append(False)
-            ans.append(tmp)
+                    correct_or_wrong.append('wrong')
+            flags.append(correct_or_wrong)
 
         data = {}
-        for li1,li2,li3 in zip(choices,ans,names):
-            dic1={}
-            dic1['id']
-            dic1[ch[1]]=li2
-            data[li3]=[dic1]
+        ans=[]
+        for id_,mean,flag,name in zip(range(len(flags)),means,flags,names):
+            dic = {}
+            dic['word'] = name
+            dic['mean'] = mean
+            dic['id'] = id_
+            dic['flag']=flag
+            dic['result'] = 'nan'
+            ans.append(dic)
 
+        
+        data['url'] = 'learning/result/'
+        data['pagename'] = 'question'
+        data['data']=ans
 
     else:
         data = {
@@ -277,6 +303,7 @@ def makeQuestAtRandom(request):
                 },
             ]
         }
+
     context = {
         "value":data,
         }
