@@ -227,32 +227,30 @@ def makeQuestAtRandom(request):
             "data":
             [
                 {
-                    'id':0,
-                    'word':'fact',
-                    'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['correct','wrong','wrong','wrong'],
-                    'result':'nan',
+                    "id": "0001",
+                    "word": "fact",
+                    "mean": ["真実","顔","太る","速い"],
+                    "flag": ["correct","wrong","wrong","wrong"],
+                    "result": "nan"
                 },
-                {   
-                    'id':1,
-                    'word':'red',
-                    'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['wrong','correct','wrong','wrong'],
-                    'result':'nan',
-                },
-                
                 {
-                    'id':2,
-                    'word':'blue',
-                    'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['wrong','wrong','wrong','correct'],
-                    'result':'nan',
+                    "id": "0002",
+                    "word": "red",
+                    "mean": ["黄","青","赤","緑"],
+                    "flag": ["wrong","wrong","correct","wrong"],
+                    "result": "nan"
                 },
-            ]
+                {
+                    "id": "0003",
+                    "word": "blue",
+                    "mean": ["白","青","黒","紫"],
+                    "flag": ["wrong","correct","wrong","wrong"],
+                    "result": "nan"
+            }]
         }
     # _values = simplejson.dumps(data, ensure_ascii=False)
-    
-    return render(request, 'wordbook/questions.html',context=data)
+    context = { "value" : data }
+    return render(request, 'wordbook/questions.html',context=context)
 
 
 

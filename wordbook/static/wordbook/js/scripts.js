@@ -123,6 +123,13 @@
     function SendJson(tango_data){
         var send_data = {"data": []};
         
+        /*
+        {"data": [
+            {"id":"nan","result":"nan"},
+            {"id":"nan","result":"nan"},
+            {"id":"nan","result":"nan"},
+        ]};
+        */ 
         console.log(tango_data);
         console.log(tango_data.data.length);
         for (let i = 0; i < tango_data.data.length; i++) {
@@ -133,6 +140,8 @@
         }
         
         console.log(send_data);
+        JsonSender(send_data);
+
     }
 
     
@@ -200,7 +209,8 @@
 
                 //リザルトを表示する
                 Result(tango_data);
-                $("#back-home").click(function(){
+                //結果送信
+                $("#send-result").click(function(){
                     SendJson(tango_data);
                 });
                 return;
@@ -270,7 +280,7 @@
 
     //#send-jsonで送信できるようにする
     $("#send-json").click(function(){
-        JsonSender(JsonSender(JSONdata));
+        JsonSender(JSONdata);
     });
 
 

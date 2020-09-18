@@ -14,10 +14,12 @@
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% url 'workbook/css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'wordbook/css/styles.css' %}" rel="stylesheet" />
     </head>
     <body id="page-top">
+        {{ value|json_script:"hello-data" }}
         <!-- Navigation-->
+        
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container">
                 <a class="navbar-brand js-scroll-trigger" href="#page-top">Sugoi Tango App</a>
@@ -35,30 +37,32 @@
                 </div>
             </div>
         </nav>
-        <!-- Masthead-->
-        <header class="masthead">
+
+        <!-- 解答-->
+        <header class="masthead ans-page" style="display: block;">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5 tango" id="question-num">1問目</h2>
                     <h2 class="text-white-50 mx-auto mt-2 mb-5 tango">単語の意味を答えよ</h2>
-                    <h1 class="mx-auto my-0 text-uppercase">問題の単語</h1>
+                    <h1 class="mx-auto my-0 text-uppercase question-name">問題の単語</h1>
                     
                         <div class="container">
                             <hr class="my-4" />
                             <div class="row">
                                 <div class="col-md-6 mb-3 mb-md-0">
-                                    <a class="btn btn-light btn-lg sbm-ans" id='correct'>解答1</a>
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn0" id="wrong">解答1</a>
                                 </div>
                                 <div class="col-md-6 mb-3 mb-md-0">
-                                    <a class="btn btn-light btn-lg sbm-ans" id='wrong'>解答2</a>
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn1" id="wrong">解答2</a>
                                 </div>
                             </div>
                             <hr class="my-4" />
                             <div class="row">
                                 <div class="col-md-6 mb-3 mb-md-0">
-                                    <a class="btn btn-light btn-lg sbm-ans" id='wrong'>解答3</a>
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn2" id="wrong">解答3</a>
                                 </div>
                                 <div class="col-md-6 mb-3 mb-md-0">
-                                    <a class="btn btn-light btn-lg sbm-ans" id='wrong'>解答4</a>
+                                    <a class="btn btn-light btn-lg sbm-ans sbm-ans-btn3" id="wrong">解答4</a>
                                 </div>
                             </div>
                         </div>
@@ -70,26 +74,92 @@
                         <div class="row">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 <div class="card py-1 h-100">
-                                    <div class="card-body text-center"></div>
+                                    <div class="card-body text-center">
                                         <div class="correct-ans"  style="display: none;">
                                             <i class="fas fa-check-square text-primary mb-2"></i>
                                             <h4 class="text-uppercase m-0 ">正解です。</h4>
                                             <hr class="my-4" />
-                                            <a class="btn btn-success btn-xs js-scroll-trigger" >next</a>
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" >next</a>
                                         </div>
                                         <div class="wrong-ans"  style="display: none;">
                                             <i class="fas fa-times-circle"></i>
                                             <h4 class="text-uppercase m-0">不正解です。</h4>
                                             <hr class="my-4" />
-                                            <a class="btn btn-success btn-xs js-scroll-trigger" >next</a>
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" >next</a>
                                     
                                         </div>
+                                        <div class="result-ans"  style="display: none;">
+                                            <i class="fas fa-times-circle"></i>
+                                            <h4 class="text-uppercase m-0">終了です。</h4>
+                                            <hr class="my-4" />
+                                            <a class="btn btn-success btn-xs js-scroll-trigger toNext" >next</a>
                                     
+                                        </div>
                                     </div>
+                                   
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+            </div>
+            
+        </header>
+
+        <!-- リザルト-->
+        <header class="masthead result-page" style="display: none;">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">result</h1>
+                    <hr class="my-4" />
+                    <h1 class="mx-auto my-0 text-uppercase" id="score1">score</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5" id="score2">/score</h2>
+                    
+                        <div class="container">
+                            <hr class="my-4" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="local_page.html">Go back home</a>
+                                </div>
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" id="send-result">結果送信</a>
+                                </div>
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" id="detail">Detail</a>
+                                </div>
+                            </div>
+                            <div id="result" style="display: none;">
+                                <hr class="my-4" />
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <i class="fas fa-check-square text-primary mb-2 Icon0" style="font-size:50px;"></i>
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <a class="btn btn-light btn-lg words0" id="wrong">解答1</a>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <i class="fas fa-check-square text-primary mb-2 Icon1" style="font-size:50px;"></i>
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <a class="btn btn-light btn-lg words1" id="wrong">解答1</a>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <i class="fas fa-check-square text-primary mb-2 Icon2" style="font-size:50px;"></i>
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <a class="btn btn-light btn-lg words2" id="wrong">解答1</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     
                 </div>
             </div>
@@ -107,6 +177,6 @@
         <!-- Third party plugin JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
-        <script src="{% url workbook/js/scripts.js %}"></script>
+        <script src="{% static 'wordbook/js/scripts.js' %}"></script>
     </body>
 </html>
