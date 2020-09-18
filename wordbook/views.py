@@ -161,7 +161,7 @@ def getRegister(request):
         user = request.user
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
-        for item json_data:
+        for item in json_data:
             p = Post.objects.create(name=item['word'],meaning=item['mean'])
         return redirect('wordbook:registerlist')
     else:
