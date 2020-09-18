@@ -140,7 +140,7 @@
         }
         
         console.log(send_data);
-        JsonSender(send_data);
+        JsonSender(JSON.stringify(send_data));
 
     }
 

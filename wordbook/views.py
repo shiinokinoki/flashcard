@@ -17,6 +17,7 @@ from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
 
 import cv2
 import random
+import json
 
 User = get_user_model()
 
@@ -138,20 +139,25 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        posted_img = request.FILES.get('image')
+        posted_img = request.body.
         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
         path = './wordbook/pymodule/machine_learning/receive.png'
-<<<<<<< HEAD
-        #detector = All_process()
-        #detector.run(img_path=path)
-=======
         detector = All_process()
         detector.run(img_path=path)
->>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
 
+def getRegister(request):
+    if request.method == 'POST':
+        user = request.user
+        json_str = request.body.decode('utf-8')
+        json_data = json.loads(json_str)['data']
+        
+        return redirect('wordbook:registerlist')
+    else:
+        return redirect('wordbook:takepic')
+    
 
 def getQuestResult(request):
     '''
@@ -160,29 +166,25 @@ def getQuestResult(request):
     '''
     if request.method == 'POST':
         user = request.user
-<<<<<<< HEAD
-        data = request.form
-        data1 = data.get("data")
-=======
-        data = request.FILES.get("data")
->>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
-        path = './test.txt'
-        with open(path,mode = 'w') as f:
-            f.write(data)
-        # ans_li = request.values()
-        # posts = Post.objects.filter(create_user=user)
+        json_str = request.body.decode('utf-8')
+        json_data = json.loads(json_str)
+        # path = './test.txt'
+        # with open(path,mode = 'w') as f:
+        #     f.write(json_str)
+        ans_li = request.values()
+        posts = Post.objects.filter(create_user=user)
         
-        # for word,ans in zip(names,ans_li):
-        #     post = posts.filter(name=word)[0]
-        #     _interval = post.interval
-        #     _e_factor = post.e_factor
-        #     if ans_li:
-        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
-        #     else:
-        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
-        #     post.interval = interval
-        #     pot.e_factor = e_factor
-        #     post.save()
+        for word,ans in zip(names,ans_li):
+            post = posts.filter(name=word)[0]
+            _interval = post.interval
+            _e_factor = post.e_factor
+            if ans_li:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
+            else:
+                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
+            post.interval = interval
+            pot.e_factor = e_factor
+            post.save()
         
         return redirect('wordbook:home')
     else:
@@ -242,13 +244,6 @@ def makeQuestAtRandom(request):
             "data":
             [
                 {
-<<<<<<< HEAD
-                    "id": "0001",
-                    "word": "fact",
-                    "mean": ["真実","顔","太る","速い"],
-                    "flag": ["correct","wrong","wrong","wrong"],
-                    "result": "nan"
-=======
                     'id':0,
                     'word':'fact',
                     'mean':['意味１','意味2','意味3','意味4'],
@@ -261,33 +256,20 @@ def makeQuestAtRandom(request):
                     'mean':['意味１','意味2','意味3','意味4'],
                     'flag':['wrong','correct','wrong','wrong'],
                     'result':'nan',
->>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
                 },
+                
                 {
-                    "id": "0002",
-                    "word": "red",
-                    "mean": ["黄","青","赤","緑"],
-                    "flag": ["wrong","wrong","correct","wrong"],
-                    "result": "nan"
+                    'id':2,
+                    'word':'blue',
+                    'mean':['意味１','意味2','意味3','意味4'],
+                    'flag':['wrong','wrong','wrong','correct'],
+                    'result':'nan',
                 },
-                {
-                    "id": "0003",
-                    "word": "blue",
-                    "mean": ["白","青","黒","紫"],
-                    "flag": ["wrong","correct","wrong","wrong"],
-                    "result": "nan"
-            }]
+            ]
         }
-
     context = {
         "value":data,
         }
-<<<<<<< HEAD
-=======
-    context = {
-        "value":data,
-        }
->>>>>>> 0111495e6468472d7c56e3f705357cd69f02b07a
     
     return render(request, 'wordbook/questions.html',context=context)
 
