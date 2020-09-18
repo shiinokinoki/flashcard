@@ -346,7 +346,7 @@ window.onload = () => {
         let fd = new FormData();
         fd.append('image',base64);
         //データの送信
-        function JsonSender(picture){
+        function JsonSender(fd){
             // 2 csrfを取得、設定する関数
             function getCookie(key) {
                 var cookies = document.cookie.split(';');
@@ -395,7 +395,7 @@ window.onload = () => {
             $.post(post_url, data);
             console.log(data);
         };
-        JsonSender(picture);
+        JsonSender(fd);
         /*
         function tenso(picture){
             return $.ajax({
