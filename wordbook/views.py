@@ -22,7 +22,7 @@ import numpy as np
 
 User = get_user_model()
 
-class Top(generic.TemplateView):
+class Top(LoginRequiredMixin,generic.TemplateView):
     '''
     Topページ表示
     '''
@@ -44,6 +44,7 @@ class NotebookCreateView(generic.CreateView):
     template_name = "wordbook/createNBform.html"
     def get_form(self):
         form = super(NotebookCreateView, self).get_form()
+        form =NoteBookForm()
         form.fields['title'].label = '単語帳名'
         return form
     def form_valid(self, form):

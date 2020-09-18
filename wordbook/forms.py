@@ -13,6 +13,7 @@ class UserCreateForm(UserCreationForm):
             fields = ('email',)
         else:
             fields = ('username', 'email')
+            
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,7 +24,8 @@ class NoteBookForm(forms.ModelForm):
 
     class Meta:
         model = NoteBook
-        fields=('title','create_user')
+        fields = ('title', 'create_user')
+        # exclude = ('create_user',) 
         
 class ImageForm(forms.ModelForm):
     class Meta:
