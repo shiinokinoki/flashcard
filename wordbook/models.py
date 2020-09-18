@@ -74,7 +74,7 @@ class NoteBook(models.Model):
     '''単語帳のモデル'''
     title  = models.CharField(max_length=100)
     create_user = models.ForeignKey(get_user_model(),null=True,on_delete=models.CASCADE)
-    context = models.TextField()
+    context = models.TextField(null=True)
     def __str__(self):
         return self.title
 
