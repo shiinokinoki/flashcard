@@ -220,13 +220,14 @@ def makeQuestAtRandom(request):
         data = {}
         for li1,li2,li3 in zip(choices,ans,names):
             dic1={}
-            dic1[ch[0]]=li1
+            dic1['id']
             dic1[ch[1]]=li2
             data[li3]=[dic1]
-    
+
 
     else:
         data = {
+            'url':'learning/result/',
             'pagename':'question',
             "data":
             [
@@ -237,7 +238,7 @@ def makeQuestAtRandom(request):
                     'flag':['correct','wrong','wrong','wrong'],
                     'result':'nan',
                 },
-                {   
+                {
                     'id':1,
                     'word':'red',
                     'mean':['意味１','意味2','意味3','意味4'],
@@ -258,7 +259,7 @@ def makeQuestAtRandom(request):
         "value":data,
         }
     
-    return render(request, 'wordbook/questions.html',context=data)
+    return render(request, 'wordbook/questions.html',context=context)
 
 
 
