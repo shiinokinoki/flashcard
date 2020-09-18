@@ -120,7 +120,7 @@
     };
 
     //問題データを送信する
-    function SendJson(tango_data){
+    function SendResult(tango_data){
         var send_data = {"data": []};
         
         /*
@@ -144,89 +144,7 @@
 
     }
 
-    
-    window.onload = () => {
-        console.log('コンソール画面に文字を表示');
-
-        //tango_dataの宣言
-        var tango_data;
-
-        //ダミーデータ
-        tango_data = {
-            "pagename": "question",
-            "data": 
-            [
-                {
-                    "id": "0001",
-                    "word": "fact",
-                    "mean": ["真実","顔","太る","速い"],
-                    "flag": ["correct","wrong","wrong","wrong"],
-                    "result": "nan"
-                },
-                {
-                    "id": "0002",
-                    "word": "red",
-                    "mean": ["黄","青","赤","緑"],
-                    "flag": ["wrong","wrong","correct","wrong"],
-                    "result": "nan"
-                },
-                {
-                    "id": "0003",
-                    "word": "blue",
-                    "mean": ["白","青","黒","紫"],
-                    "flag": ["wrong","correct","wrong","wrong"],
-                    "result": "nan"
-        }]};
-        //json読み込み
-        tango_data = JSON.parse($("#hello-data").text());
-        console.log(tango_data);
-        
-
-        cnt = Rewrite(tango_data,cnt);
-
-        //解答をクリックすると正誤と答えが現れる
-        $(".sbm-ans").click(function()  {
-            console.log(tango_data);
-            console.log((parseFloat($("#question-num").text()[0])));
-            if ($(this).attr('id')=='correct'){
-                $('.correct-ans').show();
-                tango_data.data[parseFloat($("#question-num").text()[0])-1].result = 'correct';
-                console.log(tango_data.data[parseFloat($("#question-num").text()[0])-1].result);
-            }
-            else{
-                $('.wrong-ans').show();
-                tango_data.data[parseFloat($("#question-num").text()[0])-1].result = 'wrong';
-                console.log(tango_data.data[parseFloat($("#question-num").text()[0])-1].result);
-            }
-        });
-        
-        //次へボタンで次の問題へ
-        $(".toNext").click(function ()  {
-            //終了条件
-            if (cnt === 3){
-                $('.wrong-ans').hide();
-                $('.correct-ans').hide();
-
-                //リザルトを表示する
-                Result(tango_data);
-                //結果送信
-                $("#send-result").click(function(){
-                    SendJson(tango_data);
-                });
-                return;
-            }
-
-            //隠す
-            $('.wrong-ans').hide();
-            $('.correct-ans').hide();
-            cnt = Rewrite(tango_data,cnt);
-        
-    });
-    }
-
-
-
-    //json 送信
+    //JSONdataを送信する
     function JsonSender(JSONdata){
         // 2 csrfを取得、設定する関数
         function getCookie(key) {
@@ -273,14 +191,90 @@
         // 5 csrfを設定する関数を実行して、POSTを実行
         csrfSetting();
         $.post(post_url, JSONdata);
-        console.log(`JSONdata = ${JSONdata}`)
+        console.log(`送信完了 JSONdata = ${JSONdata}`)
         console.log(`JSONdata.data[0].id = ${JSONdata.data[0].id}`)
     };
 
-    //#send-jsonで送信できるようにする
-    $("#send-json").click(function(){
-        JsonSender(JSONdata);
+    //main関数
+    window.onload = () => {
+        console.log('コンソール画面に文字を表示');
+
+        //tango_dataの宣言
+        var tango_data;
+
+        //ダミーデータ
+        tango_data = {
+            "pagename": "question",
+            "data": 
+            [
+                {
+                    "id": "0001",
+                    "word": "fact",
+                    "mean": ["真実","顔","太る","速い"],
+                    "flag": ["correct","wrong","wrong","wrong"],
+                    "result": "nan"
+                },
+                {
+                    "id": "0002",
+                    "word": "red",
+                    "mean": ["黄","青","赤","緑"],
+                    "flag": ["wrong","wrong","correct","wrong"],
+                    "result": "nan"
+                },
+                {
+                    "id": "0003",
+                    "word": "blue",
+                    "mean": ["白","青","黒","紫"],
+                    "flag": ["wrong","correct","wrong","wrong"],
+                    "result": "nan"
+        }]};
+        //json読み込み
+        tango_data = JSON.parse($("#hello-data").text());
+        console.log(tango_data);
+        
+        function jsQuestioin
+        cnt = Rewrite(tango_data,cnt);
+
+        //解答をクリックすると正誤と答えが現れる
+        $(".sbm-ans").click(function()  {
+            console.log(tango_data);
+            console.log((parseFloat($("#question-num").text()[0])));
+            if ($(this).attr('id')=='correct'){
+                $('.correct-ans').show();
+                tango_data.data[parseFloat($("#question-num").text()[0])-1].result = 'correct';
+                console.log(tango_data.data[parseFloat($("#question-num").text()[0])-1].result);
+            }
+            else{
+                $('.wrong-ans').show();
+                tango_data.data[parseFloat($("#question-num").text()[0])-1].result = 'wrong';
+                console.log(tango_data.data[parseFloat($("#question-num").text()[0])-1].result);
+            }
+        });
+        
+        //次へボタンで次の問題へ
+        $(".toNext").click(function ()  {
+            //終了条件
+            if (cnt === 3){
+                $('.wrong-ans').hide();
+                $('.correct-ans').hide();
+
+                //リザルトを表示する
+                Result(tango_data);
+                //結果送信
+                $("#send-result").click(function(){
+                    SendResult(tango_data);
+                });
+                return;
+            }
+
+            //隠す
+            $('.wrong-ans').hide();
+            $('.correct-ans').hide();
+            cnt = Rewrite(tango_data,cnt);
+        
     });
+    }
+
 
 
     // Collapse Navbar
