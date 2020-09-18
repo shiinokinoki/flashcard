@@ -153,7 +153,7 @@
 
         //ダミーデータ
         tango_data = {
-            "ver": "question",
+            "pagename": "question",
             "data": 
             [
                 {
@@ -266,16 +266,15 @@
         var protoc = location.protocol;
         var url_host = location.host ;
         var root_url = protoc + "//" +url_host
-        var cur_url = URLJoin(root_url, "wordbook","takepic","detimg");
+        var cur_url = URLJoin(root_url, "wordbook","learning","result");
         // 4 POST先と送信したい値の設定
         var post_url = cur_url+"/";
-        var data = {
-            'image': 'Hello',
-        };
 
         // 5 csrfを設定する関数を実行して、POSTを実行
         csrfSetting();
-        $.post(post_url, data);
+        $.post(post_url, JSONdata);
+        console.log(`JSONdata = ${JSONdata}`)
+        console.log(`JSONdata.data[0].id = ${JSONdata.data[0].id}`)
     };
 
     //#send-jsonで送信できるようにする

@@ -155,20 +155,25 @@ def getQuestResult(request):
     '''
     if request.method == 'POST':
         user = request.user
-        names = request.FILES.keys()
-        ans_li = request.values()
-        posts = Post.objects.filter(create_user=user)
-        for word,ans in zip(names,ans_li):
-            post = posts.filter(name=word)[0]
-            _interval = post.interval
-            _e_factor = post.e_factor
-            if ans_li:
-                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
-            else:
-                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
-            post.interval = interval
-            pot.e_factor = e_factor
-            post.save()
+        data = request.form
+        data1 = data.get("data")
+        path = './test.txt'
+        with open(path,mode = 'w') as f:
+            f.write(data)
+        # ans_li = request.values()
+        # posts = Post.objects.filter(create_user=user)
+        
+        # for word,ans in zip(names,ans_li):
+        #     post = posts.filter(name=word)[0]
+        #     _interval = post.interval
+        #     _e_factor = post.e_factor
+        #     if ans_li:
+        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
+        #     else:
+        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
+        #     post.interval = interval
+        #     pot.e_factor = e_factor
+        #     post.save()
         
         return redirect('wordbook:home')
     else:
@@ -216,13 +221,14 @@ def makeQuestAtRandom(request):
         data = {}
         for li1,li2,li3 in zip(choices,ans,names):
             dic1={}
-            dic1[ch[0]]=li1
+            dic1['id']
             dic1[ch[1]]=li2
             data[li3]=[dic1]
-    
+
 
     else:
         data = {
+            'url':'learning/result/',
             'pagename':'question',
             "data":
             [
@@ -248,8 +254,11 @@ def makeQuestAtRandom(request):
                     "result": "nan"
             }]
         }
-    # _values = simplejson.dumps(data, ensure_ascii=False)
-    context = { "value" : data }
+
+    context = {
+        "value":data,
+        }
+    
     return render(request, 'wordbook/questions.html',context=context)
 
 

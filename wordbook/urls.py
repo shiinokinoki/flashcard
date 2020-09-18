@@ -15,6 +15,7 @@ urlpatterns = [
     path('registerlist/',views.makeregisterlist,name='registerlist'),
     # path('registerlist/registered/',views.GetChecklist.as_view(),name='registered'),
     path('learning/',views.makeQuestAtRandom,name='question'),
+    path('learning/result/',views.getQuestResult,name='result'),
     path('post_list/', views.MyPostListView.as_view(), name='post_list'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/edit', views.PostUpdateView.as_view(),name='post_update'),
