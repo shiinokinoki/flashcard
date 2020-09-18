@@ -2,7 +2,7 @@
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import UpdateView, DeleteView
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import (
     get_user_model, logout as auth_logout,
@@ -38,20 +38,13 @@ class MyNotebookListView(generic.ListView):
         user = self.request.user
         return NoteBook.objects.filter(create_user=user)
 
-class NotebookCreateView(generic.CreateView):
+class NotebookCreateView(LoginRequiredMixin,generic.CreateView):
     model = NoteBook
-    form_class = NoteBookForm
+    fields = ['title']
     template_name = "wordbook/createNBform.html"
-    def get_form(self):
-        form = super(NotebookCreateView, self).get_form()
-        form =NoteBookForm()
-        form.fields['title'].label = '単語帳名'
-        return form
     def form_valid(self, form):
-        post = form.save(commit=False)
-        post.create_user = self.request.user
-        post.save()
-        return redirect("wordbook:home")
+        form.instance.create_user = self.request.user
+        return super().form_valid(form)
     
 class MyPostListView(generic.ListView):
     '''
