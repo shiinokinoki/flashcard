@@ -343,10 +343,11 @@ window.onload = () => {
 
     $("#send-pic").click(function(){
         var base64 = canvas.toDataURL('image/jpg');	
-        let fd = new FormData();
-        fd.append('image',base64);
+        var fData = new FormData();
+        fData.append('img', base64);
+
         //データの送信
-        function JsonSender(fd){
+        function JsonSender(fData){
             // 2 csrfを取得、設定する関数
             function getCookie(key) {
                 var cookies = document.cookie.split(';');
@@ -395,7 +396,28 @@ window.onload = () => {
             $.post(post_url, data);
             console.log(data);
         };
-        JsonSender(fd);
+
+        function send_img(fData){
+            //ajax送信
+            $.ajax({
+                //画像処理サーバーに返す場合
+                url: 'https://192.168.0.100:12345/hoge_image_processing',   
+                type: 'POST',
+                data: fData ,
+                contentType: false,
+                processData: false,
+                success: function(data, dataType) {
+                    //非同期で通信成功時に読み出される [200 OK 時]
+                    console.log('Success', data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //非同期で通信失敗時に読み出される
+                    console.log('Error : ' + errorThrown);
+                }
+            });
+        };
+        //JsonSender(fData);
+        send_img(fData);
         /*
         function tenso(picture){
             return $.ajax({
