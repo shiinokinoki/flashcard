@@ -72,12 +72,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class NoteBook(models.Model):
     '''単語帳のモデル'''
+    id = models.IntegerField(primary_key=True,editable=Flase)
     title  = models.CharField(max_length=100)
     create_user = models.ForeignKey(get_user_model(),null=True,on_delete=models.CASCADE)
-    context = models.TextField(null=True)
+    context = models.TextField(null=True,blank=True)
     def __str__(self):
         return self.title
-
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of MyModelName."""
+        return reverse('wordbook:question', args=[str(self.id)])
     
 class Post(models.Model):
     '''
@@ -89,8 +92,7 @@ class Post(models.Model):
     accuracy:正答率
     date_joined:登録時間
     '''
-    # Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
+    id = models.IntegerField(primary_key=True,editable=Flase)
     name = models.CharField(verbose_name='英単語を入力',max_length=50,blank=False,null=False)
     meaning = models.CharField(verbose_name='和訳',max_length=100)
     interval = models.FloatField(default=1)
