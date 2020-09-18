@@ -192,8 +192,8 @@ def getQuestResult(request):
 
 def takepicture(request):
     data = {'url':'takepic/','pagename':'takepic'}
-    context = {'value',data}
-    render(request, 'takepic.html',context=context)
+    context = {'value':data}
+    return render(request, 'takepic.html',context=context)
     
 def makeQuestAtRandom(request):
     '''
