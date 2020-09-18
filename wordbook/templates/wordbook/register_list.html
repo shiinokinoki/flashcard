@@ -28,7 +28,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="local_page.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="page.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#one">About</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#two">Projects</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#three">Contact</a></li>
@@ -44,48 +44,34 @@
                     <h2 class="text-white-50 mx-auto mt-2 mb-5">Kaiseki Kekka</h2>
                         
                     <!-- 本来ならスクロールスパイで実装したい　http://akiok-jp.hatenablog.com/entry/2013/04/21/215225　に追加方法-->
-                    
-                    
                     <div class="container">
-                    
-                {% if word_list %}
-                
-                    {%for word in word_list %}
-                    
-                            <div class="row">
-                                
-                                <div class="col-md-6 mb-3 mb-md-0">
-                                    <div class="dropdown">
-                                        <button type="button" id="dropdown1"
-                                            class="btn btn-secondary dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <!-- fact -->
-                                        {{ word }}
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown1">
-                                        <!-- {%for item in gender.list %} -->
-                                        <a class="dropdown-item" href="emp-fill" id="1">意味１</a>
-                                        <!-- {% endfor %} -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3 mb-md-0">
-                                    <div class="card py-1 h-50">
-                                        <div class="small text-black-50 emp" id="1"></div>
-                                    </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="dropdown">
+                                    <button type="button" id="dropdown1" class="btn btn-secondary dropdown-toggle bg-black"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        fact
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                        <li class="dropdown-item" id="1" value="意味1">意味1</li>
+                                        <li class="dropdown-item" id="1" value='意味2'>意味2</li>
+                                        <li class="dropdown-item" id="1" value='意味3'>意味3</li>
+                                    </ul>
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="card py-3 h-100 bg-dark text-white" id='card1'>
+                                    <p class="card-text text-danger">未入力</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-                            <!-- 改行-->
-                            <hr class="my-4" />
-                    {% endfor %} 
-                {% endif %}
-                    
-                    </div>    
-                        
+                    <!-- 改行-->
+                    <hr class="my-4" />
+                            
                 </div>
             
             </div>
