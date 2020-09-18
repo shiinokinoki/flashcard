@@ -41,7 +41,7 @@ class After_ocr():
             return False
         if len(s) < 3:
             return False
-    
+        
         return True
 
 
