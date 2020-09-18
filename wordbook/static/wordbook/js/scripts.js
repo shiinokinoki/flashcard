@@ -146,6 +146,7 @@
 
     //JSONdataを送信する
     function JsonSender(tango_data,JSONdata){
+        console.log(tango_data);
         // 2 csrfを取得、設定する関数
         function getCookie(key) {
             var cookies = document.cookie.split(';');
@@ -184,12 +185,12 @@
         var protoc = location.protocol;
         var url_host = location.host ;
         var root_url = protoc + "//" +url_host
-        var cur_url = URLJoin(root_url, "wordbook",`${tango_data.data.url}`);
+        var cur_url = URLJoin(root_url, "wordbook",`${tango_data.url}`);
         console.log(`tango_data =`);
         console.log(tango_data);
         console.log(`tango_data.url = ${tango_data.url}`)
-        // 4 POST先と送信したい値の設定
-        var post_url = cur_url+"/";
+        // 4 POST先と送信したい値の設定 TODO urlの名前
+        var post_url = cur_url // +"/";
 
         // 5 csrfを設定する関数を実行して、POSTを実行
         csrfSetting();
