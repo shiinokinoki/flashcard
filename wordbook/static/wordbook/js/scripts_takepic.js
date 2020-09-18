@@ -343,10 +343,10 @@ window.onload = () => {
 
     $("#send-pic").click(function(){
         var base64 = canvas.toDataURL('image/jpg');	
-        var fData = new FormData();
-        console.log(base64);
-        fData.append('image', base64);
-        console.log(...fData.entries());
+        // base64変換したデータのプレフィクスを削除.
+        base64 = base64.replace(/^data:\w+\/\w+;base64,/, '');
+        	
+
 
         //データの送信
         function jsJsonSender(fData){
@@ -396,7 +396,9 @@ window.onload = () => {
             // 5 csrfを設定する関数を実行して、POSTを実行
             csrfSetting();
             $.post(post_url, JSON.stringify(data));
+            console.log(`url = ${post_url}`);
             console.log(JSON.stringify(data));
+            
         };
 
         function send_img(fData){
@@ -435,8 +437,8 @@ window.onload = () => {
                 }
             });
         };
-        console.log(fData);
-        jsJsonSender(fData);
+        console.log(base64);
+        jsJsonSender(base64);
         //send_img(fData);
         /*
         function tenso(picture){

@@ -138,23 +138,28 @@ def makeregisterlist(request):
 
 
 
-# def getimage(request):
-#     if request.method == 'POST':
-#         img_str = request.Form['image']
-#         # path = './test_img.txt'
-#         # with open(path,mode = 'w') as f:
-#         #     f.write(img_str)
-#         posted_img = base64.b64decode(img_str)
-#         jpg=np.frombuffer(posted_img,dtype=np.uint8)
-#         #raw image <- jpg
-#         img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
-#         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
-#         path = './wordbook/pymodule/machine_learning/receive.png'
-#         detector = All_process()
-#         detector.run(img_path=path)
-#         return redirect('wordbook:registerlist')
-#     else:
-#         return redirect('wordbook:takepic')
+def getimage(request):
+    if request.method == 'POST':
+        img_str = request.body.decode('utf-8')
+        print('img_str',img_str)
+        path = './test_img.txt'
+        #with open(target_file, 'rb') as f:
+        #    img_base64 = f.read()
+
+        #
+        img_str += "=" * ((4 - len(img_str) % 4) % 4) #ugh        
+        posted_img = base64.urlsafe_b64decode(img_str)
+
+        jpg=np.frombuffer(posted_img,dtype=np.uint8)
+        #raw image <- jpg
+        img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
+        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
+        path = './wordbook/pymodule/machine_learning/receive.png'
+        detector = All_process()
+        detector.run(img_path=path)
+        return redirect('wordbook:registerlist')
+    else:
+        return redirect('wordbook:takepic')
 
 def getRegister(request):
     if request.method == 'POST':
