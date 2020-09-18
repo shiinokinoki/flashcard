@@ -184,7 +184,10 @@
         var protoc = location.protocol;
         var url_host = location.host ;
         var root_url = protoc + "//" +url_host
-        var cur_url = URLJoin(root_url, "wordbook",`${tango_data.url}`);
+        var cur_url = URLJoin(root_url, "wordbook",`${tango_data.data.url}`);
+        console.log(`tango_data =`);
+        console.log(tango_data);
+        console.log(`tango_data.url = ${tango_data.url}`)
         // 4 POST先と送信したい値の設定
         var post_url = cur_url+"/";
 
@@ -280,18 +283,114 @@
 
         //register画面でのjs関数
         function jsRegister(){
+
+            //DOMの追加
+            /*
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="dropdown">
+                            <button type="button" id="dropdown1" class="btn btn-secondary dropdown-toggle bg-black"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                fact
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                <div class="jAppend ${i}" ></div>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="card py-3 h-100 bg-dark text-white">
+                            <p class="card-text text-danger" id='card${i}'>未入力</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 改行-->
+            <hr class="my-4" />
+            */
+
+            
+
+            var i = 0;
+            var j = 0;
+            for (let i = 0; i < tango_data.data.length; i++) {
+                ////
+                console.log(`${i}回目！！！！！`)
+                console.log(tango_data.data[i]);
+
+                //DOM追加
+                $('.iAppend').append(`<div class="container"><div class="row"><div class="col-md-6 mb-3 mb-md-0"><div class="dropdown"><button type="button" id="dropdown${i}" class="btn btn-secondary dropdown-toggle bg-black"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">fact</button><ul class="dropdown-menu" aria-labelledby="dropdown1"><div class="jAppend${i}"></div></ul></div></div><div class="col-md-6 mb-3 mb-md-0"><div class="card py-3 h-100 bg-dark text-white"><p class="card-text text-danger" id='card${i}'>未入力</p></div></div></div></div><!-- 改行--><hr class="my-4" />`);       
+                //名前追加
+                $(`#dropdown${i}`).text(`${tango_data.data[i].word}`);
+                console.log(tango_data.data[i].word);
+                for (let j = 0; j < tango_data.data[i].mean.length; j++) {
+                    //DOM追加
+                    $(`.jAppend${i}`).append(`<li class="dropdown-item i${i}" id="j${j}" value="v${j}"></li>`);
+                    //選択肢追加
+                    console.log(`i,j = ${i}#${j}`);
+                    console.log($(`.i${i}` + `#j${j}`).text());
+                    $(`.i${i}` + `#j${j}`).text(`${tango_data.data[i].mean[j]}`);
+                    console.log(tango_data.data[i].mean[j]);
+                }
+                
+            }
+            
+            
+
+
             return;
         };
 
         if (tango_data.pagename === "question"){
             jsQuestion();
         }
-        else if (tango_data.pagename === "register"){
+        else if (tango_data.pagename === "register_list"){
+            console.log('register_list');
             jsRegister();
+
+            //ドロップダウンの操作 TODO 色の変化
+            $('.dropdown-item').click(function () {
+                //通常16文字 ex)dropdown-item i6
+                var eleLeng = $(this).attr('class').length;
+                var eleNum;
+                if (eleLeng == 16){
+                    eleNum = 1
+                } else if (eleLeng == 17){
+                    eleNum = 2
+                } else if (eleLeng == 18){
+                    eleNum = 3
+                }
+
+                $(`#card${$(this).attr('class').slice(eleLeng - eleNum)}`).text($(this).text());
+            });
+
+            //カードの記録を送信
+            var send_data = {"data": []};
+            $("#send-result").click(function(){
+                for (let i = 0; i < tango_data.data.length; i++) {
+                    var mean = $(`#card${i}`).text();
+                    console.log(`mean = ${mean}`);
+
+                    /*
+                    {"data": [
+                        {"id":"nan","mean":"nan"},
+                        {"id":"nan","mean":"nan"},
+                        {"id":"nan","mean":"nan"},
+                    ]};
+                    */ 
+                    send_data.data.push({"id":`${tango_data.data[i].id}`,"mean":mean});
+                    
+                }
+                console.log(send_data);
+                JsonSender(tango_data,JSON.stringify(send_data));
+
+            });
+            
+            
         }
         
     }
-
 
 
     // Collapse Navbar
