@@ -24,9 +24,4 @@ class NoteBookForm(forms.ModelForm):
     class Meta:
         model = NoteBook
         fields=('title','create_user')
-        
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
-        fields = ['picture', 'title']
     

@@ -48,14 +48,7 @@
                     <canvas id="picture" width="300" height="200"></canvas>
                     <form>
                     <button class="btn btn-success" type="button" id="shutter">take a picture</button>
-                    </form>
-
-                    <form enctype="multipart/form-data" action="{% url 'wordbook:upload' %}" method="post">
-                        {% csrf_token %}
-                        {{form.as_p}}
-                        <input type="submit" value="Upload">
-                    </form>
-                    
+                    </form>                    
                     
                         <div class="container">
                             <hr class="my-4" />

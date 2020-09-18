@@ -110,12 +110,7 @@ def makeregisterlist(request):
     path = './save.json'
     
     word_li = readjson(path=path)
-    # word_list =[]
-    # for word in scanned_dic:
-    #     word_list.append(word['name'])
-    # context = {
-    #     'word_list':word_list,
-    # }
+
     data = {}
     dic_li = []
     for i,d in enumerate(word_li):
@@ -124,7 +119,6 @@ def makeregisterlist(request):
         dic['word'] = d['name']
         dic['mean'] = d['meaning']
         dic_li.append(dic)
-    
     data["pagename"] = "register_list"
     data["data"] = dic_li
     data["url"] = 'registering/'
@@ -143,25 +137,6 @@ def makeregisterlist(request):
 #                 'url':'registerlist/',
 #             }
 #             context = {'value':data}
-#             path = './wordbook/pymodule/machine_learning/receive.png'
-#             detector = All_process()
-#             detector.run(img_path=path)
-#             word_li = readjson(path=path)
-#             data = {}
-#             dic_li = []
-#             for i,d in enumerate(word_li):
-#                 dic = {}
-#                 dic['id'] = i
-#                 dic['word'] = d['name']
-#                 dic['mean'] = d['meaning']
-#                 dic_li.append(dic)
-            
-#             data["pagename"] = "registerlist"
-#             data["data"] = dic_li
-#             data["url"] = 'registering/'
-#             context = {
-#                 "value":data,
-#             }
 #             return render(request, 'wordbook/register_list.html',context=context)
 #     else:
 #         form = ImageForm()
@@ -171,11 +146,16 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        img_str = request.Form['image']
-        # path = './test_img.txt'
-        # with open(path,mode = 'w') as f:
-        #     f.write(img_str)
-        posted_img = base64.b64decode(img_str)
+        img_str = request.body.decode('utf-8')
+        print('img_str',img_str)
+        path = './test_img.txt'
+        #with open(target_file, 'rb') as f:
+        #    img_base64 = f.read()
+
+        #
+        img_str += "=" * ((4 - len(img_str) % 4) % 4) #ugh        
+        posted_img = base64.urlsafe_b64decode(img_str)
+
         jpg=np.frombuffer(posted_img,dtype=np.uint8)
         #raw image <- jpg
         img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
