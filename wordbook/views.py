@@ -110,14 +110,27 @@ def makeregisterlist(request):
     count =0
     path = './save.json'
     
-    context = readjson(path=path)
+    word_li = readjson(path=path)
     # word_list =[]
     # for word in scanned_dic:
     #     word_list.append(word['name'])
     # context = {
     #     'word_list':word_list,
     # }
-    return render(request, 'wordbook/register_list.html', context=context)
+    data = {}
+    dic_li = []
+    for i,d in enumerate(word_li):
+        dic = {}
+        dic['id'] = i
+        dic['word'] = d['name']
+        dic['mean'] = d['meaning']
+        dic_li.append(dic)
+    
+    data["pagename"] = "register_list"
+    data["data"] = dic_li
+
+
+    return render(request, 'wordbook/register_list.html',context=data)
 
 
 
@@ -208,25 +221,34 @@ def makeQuestAtRandom(request):
 
     else:
         data = {
-            'fact':
-                [{
+            'pagename':'question',
+            "data":
+            [
+                {
+                    'id':0,
+                    'word':'fact',
                     'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['correct','wrong','wrong','wrong']
-                }],
-            'red' :
-                [{
+                    'flag':['correct','wrong','wrong','wrong'],
+                    'result':'nan',
+                },
+                {   
+                    'id':1,
+                    'word':'red',
                     'mean':['意味１','意味2','意味3','意味4'],
                     'flag':['wrong','correct','wrong','wrong']
-                }],
-            'blue':
+                },
+                'blue':
                 [{
+                    'id':2,
+                    'word':'blue',
                     'mean':['意味１','意味2','意味3','意味4'],
                     'flag':['wrong','wrong','wrong','correct']
                 }],
+            ]
         }
     # _values = simplejson.dumps(data, ensure_ascii=False)
     
-    return render(request, 'wordbook/questions.html', context=data)
+    return render(request, 'wordbook/questions.html',context=data)
 
 
 
