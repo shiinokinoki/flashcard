@@ -19,6 +19,7 @@ import cv2
 import random
 import json
 import base64
+import numpy as np
 
 User = get_user_model()
 
@@ -140,16 +141,18 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        img_str = request.body.
-        path = './test_img.txt'
-        with open(path,mode = 'w') as f:
-            f.write(img_str)
-        # posted_img = base64.b64decode(posted_img).decode()
-        # img = posted_img['image']
-        # cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
-        # path = './wordbook/pymodule/machine_learning/receive.png'
-        # detector = All_process()
-        # detector.run(img_path=path)
+        img_str = request.Form['image']
+        # path = './test_img.txt'
+        # with open(path,mode = 'w') as f:
+        #     f.write(img_str)
+        posted_img = base64.b64decode(img_str)
+        jpg=np.frombuffer(posted_img,dtype=np.uint8)
+        #raw image <- jpg
+        img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
+        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
+        path = './wordbook/pymodule/machine_learning/receive.png'
+        detector = All_process()
+        detector.run(img_path=path)
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
