@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 import uuid
-
+from django.urls import reverse
 class UserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
@@ -80,8 +80,8 @@ class NoteBook(models.Model):
         return self.title
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
-        return reverse('wordbook:question', args=[str(self.id)])
-    
+            return reverse('wordbook:question', args=[str(self.id)])
+
 class Post(models.Model):
     '''
     name:英単語
