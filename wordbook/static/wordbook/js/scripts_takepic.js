@@ -305,10 +305,10 @@ window.onload = () => {
     const constraints = {
       audio: false,
       video: {
-        width: 300,
-        height: 200,
-        facingMode: "user"   // フロントカメラを利用する
-        // facingMode: { exact: "environment" }  // リアカメラを利用する場合
+        width: { ideal: 4096 },
+        height: { ideal: 2160 } ,
+        // facingMode: "user"   // フロントカメラを利用する
+        facingMode: { exact: "environment" }  // リアカメラを利用する場合
       }
     };
   
