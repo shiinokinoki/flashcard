@@ -343,8 +343,8 @@ window.onload = () => {
 
     $("#send-pic").click(function(){
         var base64 = canvas.toDataURL('image/jpg');	
-        // base64変換したデータのプレフィクスを削除.
-        var picture = base64.replace(/^data:\w+\/\w+;base64,/, '');	
+        let fd = new FormData();
+        fd.append('image',base64);
         //データの送信
         function JsonSender(picture){
             // 2 csrfを取得、設定する関数
@@ -393,6 +393,7 @@ window.onload = () => {
             // 5 csrfを設定する関数を実行して、POSTを実行
             csrfSetting();
             $.post(post_url, data);
+            console.log(data);
         };
         JsonSender(picture);
         /*
