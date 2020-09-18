@@ -42,9 +42,15 @@
                 <div class="mx-auto text-center">
                   
 
-                    <form action = "" method ="post">{% csrf_token %}
+                    <form action = "" method ="post">
+                      {% csrf_token %}
 
-                      {{ form.as_p }}
+                      
+                      <div class="col-xs-12 mb-3 mb-md-0">
+                        <div class="card py-3 h-100 bg-dark text-white">
+                            <p class="card-text text-info" id='card${i}'>{{ form.as_p }} </p>
+                        </div>
+                      </div>
 
                       <input type="submit" value="登録する">
 
