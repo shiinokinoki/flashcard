@@ -1,1 +1,1 @@
-# flashcard
+## APP:wordbookをメインにしようと思います．

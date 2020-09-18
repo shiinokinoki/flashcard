@@ -171,9 +171,21 @@
         function csrfSafeMethod(method) {
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
-
+        const URLJoin = (...args) =>
+        args
+            .join('/')
+            .replace(/[\/]+/g, '/')
+            .replace(/^(.+):\//, '$1://')
+            .replace(/^file:/, 'file:/')
+            .replace(/\/(\?|&|#[^!])/g, '$1')
+            .replace(/\?/g, '&')
+            .replace('&', '?');
+        var protoc = location.protocol;
+        var url_host = location.host ;
+        var root_url = protoc + "//" +url_host
+        var cur_url = URLJoin(root_url, "wordbook","takepic","detimg");
         // 4 POST先と送信したい値の設定
-        var post_url = "http://127.0.0.1:8040/wordbook/takepic/detimg/";
+        var post_url = cur_url+"/";
         var data = {
             'image': 'Hello',
         };

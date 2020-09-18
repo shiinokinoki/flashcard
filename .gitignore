@@ -1,7 +1,8 @@
 flashcard/db.sqlite3
-flashcard/flashcard/__pycache__/__init__.cpython-37.pyc
-flashcard/flashcard/__pycache__/settings.cpython-37.pyc
-flashcard/flashcard/__pycache__/urls.cpython-37.pyc
+flashcard/settings.py
+flashcard/__pycache__/__init__.cpython-37.pyc
+flashcard/__pycache__/settings.cpython-37.pyc
+flashcard/__pycache__/urls.cpython-37.pyc
 flashcard/wordbook/__pycache__/__init__.cpython-37.pyc
 flashcard/wordbook/__pycache__/admin.cpython-37.pyc
 flashcard/wordbook/__pycache__/models.cpython-37.pyc

@@ -1,0 +1,12 @@
+Django==3.0.3
+numpy==1.19.1
+nltk==3.5
+opencv-python==4.4.0.42
+googletrans==3.0.0
+bootstrap4==0.1.0
+django_heroku==0.3.1
+dj-database-url
+gunicorn>=19.8,<19.9
+psycopg2
+pillow
+pyocr
