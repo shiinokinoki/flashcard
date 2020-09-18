@@ -8,8 +8,8 @@ from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 
-from .forms import UserCreateForm,NoteBookForm,ImageForm
-from .models import User, NoteBook, Post, Image
+from .forms import UserCreateForm,NoteBookForm
+from .models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
 from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
@@ -173,7 +173,7 @@ def getRegister(request):
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
         for item in json_data:
-            p = Post.objects.create(name=item['word'],meaning=item['mean'])
+            p = Post.objects.create(name=item['id'],meaning=item['mean'],create_user=user)
         return redirect('wordbook:home')
     else:
         return redirect('wordbook:takepic')

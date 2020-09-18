@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from .models import NoteBook,Image
+from .models import NoteBook
 from django import forms
 User = get_user_model()
 
