@@ -80,8 +80,7 @@ class PostUpdateView(UpdateView):
 
 
 class PostDeleteView(DeleteView):
-    '''
-    '''
+
     model = Post
     success_url = reverse_lazy('wordbook:post_list')
 
@@ -139,33 +138,34 @@ def makeregisterlist(request):
 
 
 
-def getimage(request):
-    if request.method == 'POST':
-        img_str = request.Form['image']
-        # path = './test_img.txt'
-        # with open(path,mode = 'w') as f:
-        #     f.write(img_str)
-        posted_img = base64.b64decode(img_str)
-        jpg=np.frombuffer(posted_img,dtype=np.uint8)
-        #raw image <- jpg
-        img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
-        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
-        path = './wordbook/pymodule/machine_learning/receive.png'
-        detector = All_process()
-        detector.run(img_path=path)
-        return redirect('wordbook:registerlist')
-    else:
-        return redirect('wordbook:takepic')
+# def getimage(request):
+#     if request.method == 'POST':
+#         img_str = request.Form['image']
+#         # path = './test_img.txt'
+#         # with open(path,mode = 'w') as f:
+#         #     f.write(img_str)
+#         posted_img = base64.b64decode(img_str)
+#         jpg=np.frombuffer(posted_img,dtype=np.uint8)
+#         #raw image <- jpg
+#         img = cv2.imdecode(jpg, cv2.IMREAD_COLOR)
+#         cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
+#         path = './wordbook/pymodule/machine_learning/receive.png'
+#         detector = All_process()
+#         detector.run(img_path=path)
+#         return redirect('wordbook:registerlist')
+#     else:
+#         return redirect('wordbook:takepic')
 
 def getRegister(request):
     if request.method == 'POST':
         user = request.user
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
+        for item json_data:
+            p = Post.objects.create(name=item['word'],meaning=item['mean'])
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
-    
 
 def getQuestResult(request):
     '''
