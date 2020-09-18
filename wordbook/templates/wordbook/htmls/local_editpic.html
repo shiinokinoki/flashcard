@@ -133,21 +133,8 @@
                 // var visibleItem = $('small text-black-50 emp', $(this).closest('.'));
                 jQuery('div #card' + $(this).attr('id')).text(jQuery(this).attr('value'));
                 // jQuery('div #card' + $(this).attr('id')).css("text-color", '#F00')
-                console.log('.card#' + jQuery(this).attr('id'))
-                console.log($(this).attr('value'))
-            });
-        });
-
-        $(function () {
-            var flg = "off";
-            $('.dropdown-toggle').on('click', function () {
-                if (flg == "off") {
-                    $('.dm-nav').addClass('click-show');
-                    flg = "on";
-                } else {
-                    $('.dm-nav').removeClass('click-show');
-                    flg = "off";
-                }
+                // console.log('.card#' + jQuery(this).attr('id'))
+                // console.log($(this).attr('value'))
             });
         });
 
