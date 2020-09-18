@@ -29,7 +29,7 @@
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'wordbook:home' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'wordbook:profile' %}">MyAcount</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'wordbook:profile' %}#account">MyAcount</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'login' %}">Login</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'wordbook:signup' %}">Signup</a></li>
@@ -54,7 +54,7 @@
                                     <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:takepic' %}">Take a Picture</a>
                                 </div>
                                 <div class="col-md-4 mb-3 mb-md-0">
-                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:createnotebook' %}">Create Tangocho</a>
+                                    <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:createnotebook' %}#tangocho">Create Tangocho</a>
                                 </div>
                                 <div class="col-md-4 mb-3 mb-md-0">
                                     <a class="btn btn-success btn-lg js-scroll-trigger" id="send-json" >Others</a>

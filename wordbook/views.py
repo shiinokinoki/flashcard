@@ -384,8 +384,9 @@ class ProfileView(LoginRequiredMixin, generic.View):
 class DeleteView(LoginRequiredMixin, generic.View):
     def get(self, *args, **kwargs):
         user = User.objects.get(email=self.request.user.email)
-        user.is_active = False
-        user.save()
+        # user.is_active = False
+        # user.save()
+        user.delete()
         auth_logout(self.request)
         return render(self.request,'registration/delete_complete.html')
 

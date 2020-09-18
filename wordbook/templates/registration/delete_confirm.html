@@ -1,8 +1,11 @@
 {% extends "registration/base.html" %}
 
 {% block content %}
-
-    <p>アカウントを削除します。よろしいですか?</p>
-    <a class="btn btn-danger" href="{% url 'wordbook:delete-complete' %}">はい</a>
-
+<div class='card border-0'>
+    <p class='card-text py-4 ' id='confirmation'>アカウントを削除します。よろしいですか?</p>
+    <div class="row ">
+        <a class="btn btn-danger" href="{% url 'wordbook:delete-complete' %}">はい</a>
+        <a class="btn btn-dark" href="{% url 'wordbook:profile' %}#account">いいえ</a>
+    </div>
+</div>
 {% endblock %}

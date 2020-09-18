@@ -344,10 +344,12 @@ window.onload = () => {
     $("#send-pic").click(function(){
         var base64 = canvas.toDataURL('image/jpg');	
         var fData = new FormData();
-        fData.append('img', base64);
+        console.log(base64);
+        fData.append('image', base64);
+        console.log(...fData.entries());
 
         //データの送信
-        function JsonSender(fData){
+        function jsJsonSender(fData){
             // 2 csrfを取得、設定する関数
             function getCookie(key) {
                 var cookies = document.cookie.split(';');
@@ -389,19 +391,36 @@ window.onload = () => {
             var cur_url = URLJoin(root_url, "wordbook","takepic","detimg");
             // 4 POST先と送信したい値の設定
             var post_url = cur_url+"/";
-            var data = fd;
+            var data = fData;
     
             // 5 csrfを設定する関数を実行して、POSTを実行
             csrfSetting();
-            $.post(post_url, data);
-            console.log(data);
+            $.post(post_url, JSON.stringify(data));
+            console.log(JSON.stringify(data));
         };
 
         function send_img(fData){
+            const URLJoin = (...args) =>
+            args
+                .join('/')
+                .replace(/[\/]+/g, '/')
+                .replace(/^(.+):\//, '$1://')
+                .replace(/^file:/, 'file:/')
+                .replace(/\/(\?|&|#[^!])/g, '$1')
+                .replace(/\?/g, '&')
+                .replace('&', '?');
+            var protoc = location.protocol;
+            var url_host = location.host ;
+            var root_url = protoc + "//" +url_host
+            var cur_url = URLJoin(root_url, "wordbook","takepic","detimg");
+            // 4 POST先と送信したい値の設定
+            var post_url = cur_url+"/";
+
+            console.log()
             //ajax送信
             $.ajax({
                 //画像処理サーバーに返す場合
-                url: 'https://192.168.0.100:12345/hoge_image_processing',   
+                url:   post_url, 
                 type: 'POST',
                 data: fData ,
                 contentType: false,
@@ -416,8 +435,9 @@ window.onload = () => {
                 }
             });
         };
-        //JsonSender(fData);
-        send_img(fData);
+        console.log(fData);
+        jsJsonSender(fData);
+        //send_img(fData);
         /*
         function tenso(picture){
             return $.ajax({
