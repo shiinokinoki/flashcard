@@ -18,6 +18,7 @@ from wordbook.pymodule.sm2 import calculate_interval_and_e_factor
 import cv2
 import random
 import json
+import base64
 
 User = get_user_model()
 
@@ -139,11 +140,16 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        posted_img = request.files['image']
-        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
-        path = './wordbook/pymodule/machine_learning/receive.png'
-        detector = All_process()
-        detector.run(img_path=path)
+        img_str = request.body.
+        path = './test_img.txt'
+        with open(path,mode = 'w') as f:
+            f.write(img_str)
+        # posted_img = base64.b64decode(posted_img).decode()
+        # img = posted_img['image']
+        # cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',img)
+        # path = './wordbook/pymodule/machine_learning/receive.png'
+        # detector = All_process()
+        # detector.run(img_path=path)
         return redirect('wordbook:registerlist')
     else:
         return redirect('wordbook:takepic')
@@ -191,9 +197,9 @@ def getQuestResult(request):
         
 
 def takepicture(request):
-    data = {'url':'takepic/','pagename':'takepic'}
-    context = {'value',data}
-    render(request, 'takepic.html',context=context)
+    data = {'url':'takepic/detimg/','pagename':'takepic'}
+    context = {'value':data}
+    return render(request, 'takepic.html',context=context)
     
 def makeQuestAtRandom(request):
     '''
