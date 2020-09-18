@@ -41,7 +41,8 @@ class After_ocr():
             return False
         if len(s) < 3:
             return False
-        
+        if re.match(r'[^\W\d]*$', s)==False:
+            return False
         return True
 
 
