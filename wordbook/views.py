@@ -22,7 +22,7 @@ import numpy as np
 
 User = get_user_model()
 
-class Top(generic.TemplateView):
+class Top(LoginRequiredMixin,generic.TemplateView):
     '''
     Topページ表示
     '''
@@ -44,6 +44,7 @@ class NotebookCreateView(generic.CreateView):
     template_name = "wordbook/createNBform.html"
     def get_form(self):
         form = super(NotebookCreateView, self).get_form()
+        form =NoteBookForm()
         form.fields['title'].label = '単語帳名'
         return form
     def form_valid(self, form):
@@ -173,7 +174,10 @@ def getRegister(request):
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
         for item in json_data:
-            p = Post.objects.create(name=item['id'],meaning=item['mean'],create_user=user)
+            if item["mean"]=="未入力":
+                continue
+            else:
+                p = Post.objects.create(name=item['word'],meaning=item['mean'],create_user=user)
         return redirect('wordbook:home')
     else:
         return redirect('wordbook:takepic')
