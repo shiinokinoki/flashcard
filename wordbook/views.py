@@ -173,7 +173,7 @@ def getRegister(request):
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
         for item in json_data:
-            if item["word"]=="未入力":
+            if item["mean"]=="未入力":
                 continue
             else:
                 p = Post.objects.create(name=item['word'],meaning=item['mean'],create_user=user)
