@@ -380,7 +380,7 @@
                         {"id":"nan","mean":"nan"},
                     ]};
                     */ 
-                    send_data.data.push({"id":`${tango_data.data[i].id}`,"mean":mean});
+                    send_data.data.push({"word":tango_data.data[tango_data.data[i].id].word,"mean":mean});
                     
                 }
                 console.log(send_data);
