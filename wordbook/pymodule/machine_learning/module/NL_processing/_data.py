@@ -77,7 +77,9 @@ class After_ocr():
         else:
             #辞書が使えないのでgoogletransを使う．
             translator = Translator()
-            ans_meanings.append(translator.translate(word,dest='ja').text) 
+            tmp_text = translator.translate(word, dest='ja').text
+            if not tmp_text.isalpha():
+                ans_meanings.append(tmp_text) 
         ans_dict = {'name':word,'meaning':ans_meanings}
         conn.close()
         return ans_dict
