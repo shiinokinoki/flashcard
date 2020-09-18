@@ -21,5 +21,6 @@ urlpatterns = [
     path('post/<int:pk>/edit', views.PostUpdateView.as_view(),name='post_update'),
     path('post/<int:pk>/delete',views.PostDeleteView.as_view(),name='post_delete'),
     path('home/createnb/',views.NotebookCreateView.as_view(),name='createnotebook'),
-    path('register/',views.upload,name='upload'),
+    # path('register/',views.upload,name='upload'),
+    path('registering/'views.getRegister,name='registering'),
 ]

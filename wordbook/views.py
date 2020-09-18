@@ -78,7 +78,6 @@ class PostUpdateView(UpdateView):
 
 
 class PostDeleteView(DeleteView):
-
     model = Post
     success_url = reverse_lazy('wordbook:post_list')
 
@@ -128,10 +127,10 @@ def makeregisterlist(request):
     
     data["pagename"] = "register_list"
     data["data"] = dic_li
+    data["url"] = ''
     context = {
         "value":data,
     }
-
     return render(request, 'wordbook/register_list.html',context=context)
 
 def upload(request):
@@ -144,6 +143,25 @@ def upload(request):
                 'url':'registerlist/',
             }
             context = {'value':data}
+            path = './wordbook/pymodule/machine_learning/receive.png'
+            detector = All_process()
+            detector.run(img_path=path)
+            word_li = readjson(path=path)
+            data = {}
+            dic_li = []
+            for i,d in enumerate(word_li):
+                dic = {}
+                dic['id'] = i
+                dic['word'] = d['name']
+                dic['mean'] = d['meaning']
+                dic_li.append(dic)
+            
+            data["pagename"] = "registerlist"
+            data["data"] = dic_li
+            data["url"] = 'registering/'
+            context = {
+                "value":data,
+            }
             return render(request, 'wordbook/register_list.html',context=context)
     else:
         form = ImageForm()
