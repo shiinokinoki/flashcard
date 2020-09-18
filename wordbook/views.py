@@ -174,7 +174,10 @@ def getRegister(request):
         json_str = request.body.decode('utf-8')
         json_data = json.loads(json_str)['data']
         for item in json_data:
-            p = Post.objects.create(name=item['id'],meaning=item['mean'],create_user=user)
+            if item["mean"]=="未入力":
+                continue
+            else:
+                p = Post.objects.create(name=item['word'],meaning=item['mean'],create_user=user)
         return redirect('wordbook:home')
     else:
         return redirect('wordbook:takepic')
