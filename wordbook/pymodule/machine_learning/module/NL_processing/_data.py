@@ -3,6 +3,7 @@ import sqlite3
 from googletrans import Translator
 import nltk
 from nltk.corpus import stopwords
+import re
 
 class After_ocr():
     def __init__(self,json_name):
@@ -14,7 +15,7 @@ class After_ocr():
         self.__using_type = ['JJ','JJR','JJS','NN','NNS','NNP','NNPS',
                          'RB','RBR','RBS','VB','VBD','VBG','VBN','VBP',
                             'VBZ']
-        symbol = {"'", '"', ':', ';', '.', ',', '-', '!', '?', "'s"}
+        symbol = {"'", '"', ':', ';', '.', ',', '-', '!', '?', "'s",'/'}
         self.__stopset = set(stopwords.words('english')) | symbol
 
     def run(self, text:str):
@@ -33,7 +34,16 @@ class After_ocr():
         '''
         stopsetに入っているものを除外する
         '''
-        return [s for s in words if s not in self.__stopset]
+        return [s for s in words if self._choose(s)]
+
+    def _choose(self, s) -> bool:
+        if s.lower() in self.__stopset:
+            return False
+        if len(s) < 3:
+            return False
+    
+        return True
+
 
     def _words_to_json(self):
         '''
@@ -66,7 +76,7 @@ class After_ocr():
         else:
             #辞書が使えないのでgoogletransを使う．
             translator = Translator()
-            ans_meanings.append(translator.translate(word).text) 
+            ans_meanings.append(translator.translate(word,dest='ja').text) 
         ans_dict = {'name':word,'meaning':ans_meanings}
         conn.close()
         return ans_dict
