@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from .models import NoteBook,Image
+from .models import NoteBook
 from django import forms
 User = get_user_model()
 
@@ -27,8 +27,5 @@ class NoteBookForm(forms.ModelForm):
         fields = ('title', 'create_user')
         # exclude = ('create_user',) 
         
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
-        fields = ['picture', 'title']
+
     
