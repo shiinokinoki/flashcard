@@ -235,15 +235,17 @@ def makeQuestAtRandom(request):
                     'id':1,
                     'word':'red',
                     'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['wrong','correct','wrong','wrong']
+                    'flag':['wrong','correct','wrong','wrong'],
+                    'result':'nan',
                 },
-                'blue':
-                [{
+                
+                {
                     'id':2,
                     'word':'blue',
                     'mean':['意味１','意味2','意味3','意味4'],
-                    'flag':['wrong','wrong','wrong','correct']
-                }],
+                    'flag':['wrong','wrong','wrong','correct'],
+                    'result':'nan',
+                },
             ]
         }
     # _values = simplejson.dumps(data, ensure_ascii=False)
