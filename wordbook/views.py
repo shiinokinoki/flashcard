@@ -138,9 +138,9 @@ def makeregisterlist(request):
 
 def getimage(request):
     if request.method == 'POST':
-        # posted_img = request.FILES.get('image')
-        # cv2.imwrite('./wordbook/pymodule/machine_learning/result.png',posted_img)
-        path = './wordbook/pymodule/machine_learning/result.png'
+        posted_img = request.FILES.get('image')
+        cv2.imwrite('./wordbook/pymodule/machine_learning/receive.png',posted_img)
+        path = './wordbook/pymodule/machine_learning/receive.png'
         detector = All_process()
         detector.run(img_path=path)
         return redirect('wordbook:registerlist')
@@ -155,20 +155,24 @@ def getQuestResult(request):
     '''
     if request.method == 'POST':
         user = request.user
-        names = request.FILES.keys()
-        ans_li = request.values()
-        posts = Post.objects.filter(create_user=user)
-        for word,ans in zip(names,ans_li):
-            post = posts.filter(name=word)[0]
-            _interval = post.interval
-            _e_factor = post.e_factor
-            if ans_li:
-                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
-            else:
-                interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
-            post.interval = interval
-            pot.e_factor = e_factor
-            post.save()
+        data = request.FILES.get("data")
+        path = './test.txt'
+        with open(path,mode = 'w') as f:
+            f.write(data)
+        # ans_li = request.values()
+        # posts = Post.objects.filter(create_user=user)
+        
+        # for word,ans in zip(names,ans_li):
+        #     post = posts.filter(name=word)[0]
+        #     _interval = post.interval
+        #     _e_factor = post.e_factor
+        #     if ans_li:
+        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,5)
+        #     else:
+        #         interval, e_factor=calculate_interval_and_e_factor(_interval,_e_factor,1)
+        #     post.interval = interval
+        #     pot.e_factor = e_factor
+        #     post.save()
         
         return redirect('wordbook:home')
     else:
@@ -250,7 +254,9 @@ def makeQuestAtRandom(request):
                 },
             ]
         }
-    # _values = simplejson.dumps(data, ensure_ascii=False)
+    context = {
+        "value":data,
+        }
     
     return render(request, 'wordbook/questions.html',context=data)
 
