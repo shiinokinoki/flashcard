@@ -8,7 +8,7 @@ from django.contrib.auth import (
     get_user_model, logout as auth_logout,
 )
 
-from .forms import UserCreateForm,NoteBookForm
+from .forms import UserCreateForm,NoteBookForm,PostEditForm
 from .models import User, NoteBook, Post
 from wordbook.pymodule.read_json import ReadJson as readjson
 from wordbook.pymodule.machine_learning.detect import All_process
@@ -42,6 +42,7 @@ class NotebookCreateView(LoginRequiredMixin,generic.CreateView):
     model = NoteBook
     fields = ['title']
     template_name = "wordbook/createNBform.html"
+    success_url = reverse_lazy('wordbook:home')
     def form_valid(self, form):
         form.instance.create_user = self.request.user
         return super().form_valid(form)
@@ -67,8 +68,10 @@ class PostDetailView(generic.DetailView):
 
 class PostUpdateView(UpdateView):
     model = Post
-    fields = ['name', 'meaning', 'notebook']
+    # fields = ['name', 'meaning', 'notebook']
+    form_class = PostEditForm
     success_url = reverse_lazy('wordbook:post_list')
+
 
 
 class PostDeleteView(DeleteView):

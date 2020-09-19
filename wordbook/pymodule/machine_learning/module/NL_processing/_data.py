@@ -41,7 +41,7 @@ class After_ocr():
             return False
         if len(s) < 3:
             return False
-        if re.match(r'[^\W\d]*$', s)==False:
+        if not s.isalpha():
             return False
         return True
 
@@ -54,7 +54,10 @@ class After_ocr():
         meaning_dict_list = []
 
         for word in self._selected:
-            meaning_dict_list.append(self._translate(word))
+            tmp = self._translate(word)
+            if tmp == None:
+                continue
+            meaning_dict_list.append(tmp)
 
         with open(self._file_name, mode="w",encoding='utf-8') as f:
             d = json.dumps(meaning_dict_list,indent=2, ensure_ascii=False)
@@ -78,8 +81,9 @@ class After_ocr():
             #辞書が使えないのでgoogletransを使う．
             translator = Translator()
             tmp_text = translator.translate(word, dest='ja').text
-            if not tmp_text.isalpha():
-                ans_meanings.append(tmp_text) 
+            if tmp_text.isalpha():
+                return None
+            ans_meanings.append(tmp_text) 
         ans_dict = {'name':word,'meaning':ans_meanings}
         conn.close()
         return ans_dict

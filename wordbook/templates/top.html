@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <div class="row bg-black">
-        <div class="col-md-4 mb-3 mb-md-0 ">
-            <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:home' %}">単語帳へ</a>
+<center>
+    <div class='text-white' ><h1>Welcome</h1></div>
+    <div class="center-block">
+        <div class="row bg-black">
+            <div class="col-md-12 mb-3 mb-md-0 ">
+                <a class="btn btn-success btn-lg js-scroll-trigger" href="{% url 'wordbook:home' %}">単語帳へ</a>
+            </div>
+        </div>
     </div>
-{% endblock %}
+    {% endblock %}
