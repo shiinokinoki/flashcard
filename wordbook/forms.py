@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from .models import NoteBook
+from .models import NoteBook,Post
 from django import forms
 User = get_user_model()
 
@@ -27,5 +27,14 @@ class NoteBookForm(forms.ModelForm):
         fields = ('title', 'create_user')
         # exclude = ('create_user',) 
         
-
+class PostEditForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('name', 'meaning', 'notebook')
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+    
     

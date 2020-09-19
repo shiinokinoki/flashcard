@@ -80,7 +80,7 @@ class NoteBook(models.Model):
         return self.title
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
-            return reverse('wordbook:question', args=[str(self.id)])
+        return reverse('wordbook:question', args=[str(self.id)])
 
 class Post(models.Model):
     '''
